@@ -19,19 +19,24 @@ function Square:init(x, y, color, dropToSide, board)
 	 self.board = board
 end
 
+function Square:moveTo(x, y)
+	 local transitionToParams = {time=1000, x=x, y=y}
+	 transition.to(self.square, transitionToParams)
+end
+
 function Square:drop()
 	 self.isDropping = true
 
 	 self.finishedDropping = function() self.isDropping = false end
 	 local transitionToParams = {time=1000, onComplete=self.finishedDropping}
 	 if self.dropToSide == 'down' then
-			transitionToParams['y'] = gridConversion:convert(self.board:nextBelow(self.gridX))
+			transitionToParams['y'] = gridConversion:convert(self.board:nextBelow(self))
 	 elseif self.dropToSide == 'right' then
-			transitionToParams['x'] = gridConversion:convert(self.board:nextRight(self.gridY))
+			transitionToParams['x'] = gridConversion:convert(self.board:nextRight(self))
 	 elseif self.dropToSide == 'up' then
-			transitionToParams['y'] = gridConversion:convert(self.board:nextAbove(self.gridX))
+			transitionToParams['y'] = gridConversion:convert(self.board:nextAbove(self))
 	 elseif self.dropToSide == 'left' then
-			transitionToParams['x'] = gridConversion:convert(self.board:nextLeft(self.gridY))
+			transitionToParams['x'] = gridConversion:convert(self.board:nextLeft(self))
 	 end
 	 transition.to(self.square, transitionToParams)
 end

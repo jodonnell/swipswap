@@ -18,6 +18,7 @@ function MainGame:init()
 	 self.droppingSquare:drop()
 
 	 self.squares = {}
+	 self.movingSquare = nil
 end
 
 
@@ -39,6 +40,24 @@ function MainGame:mainGameLoop()
 			self.droppingSquare:drop()
 	 end
 
+	 if control.x and control.startTouch then
+			local x = gridConversion:pixelsToGrid(control.x)
+			local y = gridConversion:pixelsToGrid(control.y)
+			self.movingSquare = self.board:getSquare(x, y)
+			control.x = nil
+			control.y = nil
+			control.startTouch = nil
+	 elseif control.x then
+			local x = gridConversion:pixelsToGrid(control.x)
+			local y = gridConversion:pixelsToGrid(control.y)
+			self.movingSquare:moveTo(x, y)
+
+			control.x = nil
+			control.y = nil
+			control.endTouch = nil
+	 end
+
+
 end
 
 
@@ -46,12 +65,15 @@ local function onScreenTouch( event )
   if event.phase == "began" then
 		 control.x = event.x
 		 control.y = event.y
+		 control.startTouch = true
   elseif event.phase == "moved" then
+		 
+		 -- control.x = event.x
+		 -- control.y = event.y
+  elseif event.phase == "ended" or event.phase == "cancelled" then
 		 control.x = event.x
 		 control.y = event.y
-  elseif event.phase == "ended" or event.phase == "cancelled" then
-		 control.x = nil
-		 control.y = nil
+		 control.endTouch = true
   end
 
   return true

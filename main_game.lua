@@ -22,7 +22,7 @@ end
 
 
 function MainGame:mainGameLoop()
-   if self.gameOver then return end
+   if self.board:isGameOver() then return end
 
 	 if self.droppingSquare.isDropping == false then
 			table.insert(self.squares, self.droppingSquare)
@@ -30,7 +30,7 @@ function MainGame:mainGameLoop()
 			if rand == 1 then
 				 self.droppingSquare = Square(1, 7, 'random',  'right', self.board)
 			elseif rand == 2 then
-				 self.droppingSquare = Square(10, 7, 'random',  'left', self.board)
+				 self.droppingSquare = Square(9, 7, 'random',  'left', self.board)
 			elseif rand == 3 then
 				 self.droppingSquare = Square(5, 13, 'random',  'up', self.board)
 			else
@@ -44,12 +44,14 @@ end
 
 local function onScreenTouch( event )
   if event.phase == "began" then
-		 control.movingRight = event.x
+		 control.x = event.x
+		 control.y = event.y
   elseif event.phase == "moved" then
-		 control.movingRight = event.x
+		 control.x = event.x
+		 control.y = event.y
   elseif event.phase == "ended" or event.phase == "cancelled" then
-     control.movingRight = false
-     control.movingLeft = false
+		 control.x = nil
+		 control.y = nil
   end
 
   return true

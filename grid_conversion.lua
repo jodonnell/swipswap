@@ -9,3 +9,8 @@ end
 function GridConversion:convert(pos)
 	 return (pos - 1) * self.squareSize + self.squareSize / 2
 end
+
+function GridConversion:pixelsToGrid(pixels)
+	 return math.floor(pixels / (self.squareSize)) + 1
+end
+

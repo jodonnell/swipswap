@@ -49,3 +49,16 @@ function Board:nextLeft(y)
 			end
 	 end
 end
+
+function Board:isGameOver()
+	 if self.board[1][7] == 1 then
+			return true
+	 elseif self.board[9][7] == 1 then
+			return true
+	 elseif self.board[5][13] == 1 then
+			return true
+	 elseif self.board[5][1] == 1 then
+			return true
+	 end
+	 return false
+end

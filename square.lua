@@ -2,7 +2,7 @@ require 'class'
 
 Square = class()
 
-function Square:init(x, y, color, dropToSide, board)
+function Square:init(x, y, color, board)
 	 self.squareSize = display.contentWidth / 9
 
 	 self.square = display.newRoundedRect(0, 0, self.squareSize, self.squareSize, 4)
@@ -11,38 +11,36 @@ function Square:init(x, y, color, dropToSide, board)
 	 self.gridX = x
 	 self.gridY = y
 
-	 self.square.x = gridConversion:convert(x)
-	 self.square.y = gridConversion:convert(y)
+	 self.square.x = gridConversion:gridToPixels(x)
+	 self.square.y = gridConversion:gridToPixels(y)
 	 
-	 self.dropToSide = dropToSide
-
 	 self.board = board
+	 self.isDropping = false
+	 self.dropped = false
 end
 
-function Square:moveTo(x, y)
-	 local transitionToParams = {time=1000, x=x, y=y}
-	 transition.to(self.square, transitionToParams)
-end
-
-function Square:drop()
-	 self.isDropping = true
-
-	 self.finishedDropping = function() self.isDropping = false end
-	 local transitionToParams = {time=1000, onComplete=self.finishedDropping}
-	 if self.dropToSide == 'down' then
-			transitionToParams['y'] = gridConversion:convert(self.board:nextBelow(self))
-	 elseif self.dropToSide == 'right' then
-			transitionToParams['x'] = gridConversion:convert(self.board:nextRight(self))
-	 elseif self.dropToSide == 'up' then
-			transitionToParams['y'] = gridConversion:convert(self.board:nextAbove(self))
-	 elseif self.dropToSide == 'left' then
-			transitionToParams['x'] = gridConversion:convert(self.board:nextLeft(self))
-	 end
-	 transition.to(self.square, transitionToParams)
+function Square:moveTo(x)
+	 self.square.x = gridConversion:gridToPixels(x)
+	 self.gridX = x
 end
 
 function Square:finishedDropping()
 	 self.isDropping = false
+end
+
+function Square:drop()
+	 self.isDropping = true
+end
+
+function Square:update()
+	 if self.isDropping then
+			self.square.y = self.square.y + 15
+	 end
+	 if self.square.y > display.contentHeight - self.squareSize / 2 then
+			self.isDropping = false
+			self.dropped = true
+			self.square.y = display.contentHeight - self.squareSize / 2 
+	 end
 end
 
 function Square:setColor(color)

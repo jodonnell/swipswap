@@ -1,0 +1,3 @@
+* SWIPSWAP
+** Bugs
+*** You can click to move a square while its falling

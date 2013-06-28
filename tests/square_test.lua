@@ -18,5 +18,8 @@ function test_the_square_stops_dropping_at_bottom_of_board()
    for x=0,100 do
       square:update()
    end
+
    assert_equal(display.contentHeight - square.squareSize / 2, square.square.y)
+   assert_equal(13, square.gridY)
+   assert_equal(square, square.board:getSquare(square.gridX, square.gridY))
 end

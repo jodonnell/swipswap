@@ -39,7 +39,9 @@ function Square:update()
 	 if self.square.y > display.contentHeight - self.squareSize / 2 then
 			self.isDropping = false
 			self.dropped = true
-			self.square.y = display.contentHeight - self.squareSize / 2 
+			self.square.y = display.contentHeight - self.squareSize / 2
+			self.gridY = 13
+			self.board:setSquare(self)
 	 end
 end
 

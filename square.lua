@@ -35,12 +35,12 @@ end
 function Square:update()
 	 if self.isDropping then
 			self.square.y = self.square.y + 15
+			self.gridY = gridConversion:pixelsToGrid(self.square.y)
 	 end
-	 if self.square.y > display.contentHeight - self.squareSize / 2 then
+	 if self.gridY == 12 then
 			self.isDropping = false
 			self.dropped = true
-			self.square.y = display.contentHeight - self.squareSize / 2
-			self.gridY = 13
+			self.square.y = gridConversion:gridToPixels(12)
 			self.board:setSquare(self)
 	 end
 end

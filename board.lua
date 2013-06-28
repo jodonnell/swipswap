@@ -36,3 +36,11 @@ end
 function Board:setSquare(square)
 	 self.board[square.gridX][square.gridY] = square
 end
+
+function Board:bottomOfGrid()
+   return 12
+end
+
+function Board:anythingBelow(x, y)
+   return y == self:bottomOfGrid() or self:getSquare(x, y + 1)
+end

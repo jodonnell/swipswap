@@ -37,23 +37,32 @@ function Square:update()
 			self.square.y = self.square.y + 15
 			self.gridY = gridConversion:pixelsToGrid(self.square.y)
 	 end
-	 if self.gridY == 12 then
+	 if self.board:anythingBelow(self.gridX, self.gridY) then
 			self.isDropping = false
 			self.dropped = true
-			self.square.y = gridConversion:gridToPixels(12)
+			self.square.y = gridConversion:gridToPixels(self.gridY)
 			self.board:setSquare(self)
 	 end
 end
 
 function Square:setColor(color)
-	 if color == 'green' then
-			self.square:setFillColor(0, 255, 0)
-	 elseif color == 'grey' then
-			self.square:setFillColor(200, 200, 200)
-	 elseif color == 'red' then
+	 if color == 'random' then
+			local colors = {'green', 'yellow', 'red', 'blue', 'pink', 'cyan'}
+			color = colors[math.random(1, #colors)]
+	 end
+
+	 if color == 'red' then
 			self.square:setFillColor(255, 0, 0)
-	 elseif color == 'random' then
-			self.square:setFillColor(math.random(0, 255), math.random(0, 255), math.random(0, 255))
+	 elseif color == 'yellow' then
+			self.square:setFillColor(255, 255, 0)
+	 elseif color == 'pink' then
+			self.square:setFillColor(255, 0, 255)
+	 elseif color == 'green' then
+			self.square:setFillColor(0, 255, 0)
+	 elseif color == 'cyan' then
+			self.square:setFillColor(0, 255, 255)
+	 elseif color == 'blue' then
+			self.square:setFillColor(0, 0, 255)
 	 end
 
 end

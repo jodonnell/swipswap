@@ -12,7 +12,7 @@ function MainGame:init(control)
    self.board = Board()
    self.squareSize = display.contentWidth / 9
 
-   self.dropSquare = Square(5, 1, 'green', self.board)
+   self.dropSquare = Square(5, 1, 'random', self.board)
 
    -- display.setDefault( "background", 0, 0, 0 )
    -- display.setDefault( "background", 255, 255, 255 )
@@ -31,7 +31,7 @@ function MainGame:mainGameLoop()
    end
 
    if self.dropSquare.dropped then
-      self.dropSquare = Square(5, 1, 'red', self.board)
+      self.dropSquare = Square(5, 1, 'random', self.board)
    end
 
    self.dropSquare:update()

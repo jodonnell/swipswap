@@ -1,6 +1,7 @@
 module(..., package.seeall)
 
 require "board"
+_ = require "underscore"
 
 function setup()
    board = Board()
@@ -15,11 +16,11 @@ function test_the_board_can_find_three_in_a_row()
    board:setSquare(square2)
    board:setSquare(square3)
 
-   board:update()
+   local squares = board:findSquaresInARow()
 
-   assert_true(square1.isFlashing)
-   assert_true(square2.isFlashing)
-   assert_true(square3.isFlashing)
+   assert_true(_.include(squares, square1))
+   assert_true(_.include(squares, square2))
+   assert_true(_.include(squares, square3))
 end
 
 function test_the_board_does_not_false_postive()
@@ -31,9 +32,12 @@ function test_the_board_does_not_false_postive()
    board:setSquare(square2)
    board:setSquare(square3)
 
-   board:update()
+   local squares = board:findSquaresInARow()
 
-   assert_false(square1.isFlashing)
+   assert_false(_.include(squares, square1))
+   assert_false(_.include(squares, square2))
+   assert_false(_.include(squares, square3))
+
 end
 
 function test_the_squares_must_be_contiguous()
@@ -48,7 +52,7 @@ function test_the_squares_must_be_contiguous()
    board:setSquare(square3)
    board:setSquare(square5)
 
-   board:update()
+   local squares = board:findSquaresInARow()
 
-   assert_false(square5.isFlashing)
+   assert_false(_.include(squares, square5))
 end

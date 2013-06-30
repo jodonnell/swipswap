@@ -31,25 +31,42 @@ end
 
 function Square:drop()
 	 self.isDropping = true
+	 self.board:clearSquare(self)
 end
 
 function Square:update()
 	 if self.isDropping then
-			self.square.y = self.square.y + 15
-			self.gridY = gridConversion:pixelsToGrid(self.square.y)
+			self:moveDown()
 	 end
-	 if self.board:anythingBelow(self.gridX, self.gridY) then
-			self.isDropping = false
-			self.dropped = true
-			self.square.y = gridConversion:gridToPixels(self.gridY)
-			self.board:setSquare(self)
+
+	 if self:anythingBelow() then
+			self:hitBottom()
 	 end
+end
+
+function Square:moveDown()
+	 self.square.y = self.square.y + 15
+	 self.gridY = gridConversion:pixelsToGrid(self.square.y)
+end
+
+function Square:hitBottom()
+	 self.isDropping = false
+	 self.dropped = true
+	 self.square.y = gridConversion:gridToPixels(self.gridY)
+	 self.board:setSquare(self)
+end
+
+function Square:anythingBelow()
+	 return self.board:anythingBelow(self.gridX, self.gridY)
 end
 
 function Square:startDisappearing()
 	 self.isFlashing = true
-	 self.yum = function() self.disappear = true end
-	 timer.performWithDelay( 2000, self.yum )
+	 timer.performWithDelay( 2000, function() self:endDisappearing() end )
+end
+
+function Square:endDisappearing()
+	 self.disappear = true
 end
 
 function Square:setColor(color)
@@ -57,7 +74,6 @@ function Square:setColor(color)
 			local colors = {'green', 'yellow', 'red', 'blue', 'pink', 'cyan'}
 			color = colors[math.random(1, #colors)]
 	 end
-	 color = 'green'
 
 	 self.color = color
 	 if color == 'red' then

@@ -10,7 +10,6 @@ function MainGame:init(control)
    self.control = control
 
    self.board = Board()
-   self.squareSize = display.contentWidth / 9
 
    self.dropSquare = Square(5, 1, 'random', self.board)
 

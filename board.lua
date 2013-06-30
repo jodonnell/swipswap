@@ -1,24 +1,16 @@
 require 'class'
+_ = require 'underscore'
+
 
 Board = class()
 
 function Board:init()
 	 self.board = {}
-	 for i=1,9 do
-      self.board[i] = {}
-      for j=1,12 do
-				 self.board[i][j] = false
+	 for x=1,9 do
+      self.board[x] = {}
+      for y=1,12 do
+				 self.board[x][y] = false
       end
-	 end
-end
-
-function Board:nextBelow(square)
-	 local x = square.gridX
-	 for y=1,12 do
-			if self.board[x][y] ~= 0 then
-				 self.board[x][y - 1] = square
-				 return y - 1
-			end
 	 end
 end
 
@@ -37,6 +29,10 @@ function Board:setSquare(square)
 	 self.board[square.gridX][square.gridY] = square
 end
 
+function Board:clearSquare(square)
+	 self.board[square.gridX][square.gridY] = nil
+end
+
 function Board:bottomOfGrid()
    return 12
 end
@@ -46,10 +42,26 @@ function Board:anythingBelow(x, y)
 end
 
 function Board:update()
-   self:findSquaresInARow()
+   local squares = self:findSquaresInARow()
+   
+   for i,square in ipairs(squares) do
+      if not square.isFlashing then
+         square:startDisappearing()
+      end
+   end
+
    self:flashSquares()
+   self:removeDeadSquares()
 
+   for i,square in ipairs(self:allSquares()) do
+      if square.isDropping == false and not square:anythingBelow() then
+         square:drop()
+      end
+      square:update()
+   end
+end
 
+function Board:removeDeadSquares()
    for x=1,9 do
       for y=1,12 do
          if self:isSpotFilled(x, y) then
@@ -86,6 +98,7 @@ function Board:flashSquares()
 end
 
 function Board:findSquaresInARow()
+   local squares = {}
    for y=1,12 do
       local squaresInARow = {}
       for x=1,9 do
@@ -106,12 +119,10 @@ function Board:findSquaresInARow()
 
          if #squaresInARow > 2 then
             for i,square in ipairs(squaresInARow) do
-               if not square.isFlashing then
-                  square:startDisappearing()
-               end
+               table.insert(squares, square)
             end
          end
       end
 	 end
-
+   return squares
 end

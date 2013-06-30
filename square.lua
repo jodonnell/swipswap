@@ -77,8 +77,9 @@ function Square:startDisappearing()
 end
 
 function Square:endDisappearing()
-	 self.disappear = true
 	 timer.cancel(self.blinkingTimer)
+	 self.square:removeSelf()
+	 self.board:clearSquare(self)
 end
 
 function Square:setColor(color)

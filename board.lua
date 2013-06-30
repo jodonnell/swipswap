@@ -50,27 +50,11 @@ function Board:update()
       end
    end
 
-   self:removeDeadSquares()
-
    for i,square in ipairs(self:allSquares()) do
       if square.isDropping == false and not square:anythingBelow() then
          square:drop()
       end
       square:update()
-   end
-end
-
-function Board:removeDeadSquares()
-   for x=1,9 do
-      for y=1,12 do
-         if self:isSpotFilled(x, y) then
-            local square = self:getSquare(x, y)
-            if square.disappear then
-               square.square:removeSelf()
-               self.board[x][y] = nil
-            end
-         end
-      end
    end
 end
 

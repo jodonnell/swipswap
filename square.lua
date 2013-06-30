@@ -18,6 +18,8 @@ function Square:init(x, y, color, board)
 	 self.isDropping = false
 	 self.isFlashing = false
 	 self.dropped = false
+   self.square:setStrokeColor(255, 255, 255)
+   self.square.strokeWidth = 1
 end
 
 function Square:moveTo(x)

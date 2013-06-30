@@ -50,7 +50,6 @@ function Board:update()
       end
    end
 
-   self:flashSquares()
    self:removeDeadSquares()
 
    for i,square in ipairs(self:allSquares()) do
@@ -80,21 +79,11 @@ function Board:allSquares()
    for x=1,9 do
       for y=1,12 do
          if self:isSpotFilled(x, y) then
-            table.insert(squares, self:getSquare(x, y))
+            _.push(squares, self:getSquare(x, y))
          end
       end
    end
    return squares
-end
-
-function Board:flashSquares()
-   for i,square in ipairs(self:allSquares()) do
-      if square.isFlashing and square.square.isVisible then
-         square.square.isVisible = false
-      elseif square.isFlashing and square.square.isVisible == false then
-         square.square.isVisible = true
-      end
-   end
 end
 
 function Board:findSquaresInARow()

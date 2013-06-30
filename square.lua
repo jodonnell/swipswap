@@ -60,13 +60,25 @@ function Square:anythingBelow()
 	 return self.board:anythingBelow(self.gridX, self.gridY)
 end
 
+function Square:blink()
+    if(self.square.alpha < 1) then
+			 transition.to( self.square, {time=140, alpha=1})
+    else 
+			 transition.to( self.square, {time=140, alpha=0.1})
+    end
+end
+
 function Square:startDisappearing()
 	 self.isFlashing = true
+
+	 transition.to( self.square, {time=140, alpha=0.1})
+	 self.blinkingTimer = timer.performWithDelay( 150, function() self:blink() end, 0 )
 	 timer.performWithDelay( 2000, function() self:endDisappearing() end )
 end
 
 function Square:endDisappearing()
 	 self.disappear = true
+	 timer.cancel(self.blinkingTimer)
 end
 
 function Square:setColor(color)

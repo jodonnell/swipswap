@@ -103,26 +103,24 @@ function Board:findSquaresInARow()
       local squaresInARow = {}
       for x=1,9 do
 				 if self:isSpotFilled(x, y) then
-            local square = self:getSquare(x, y)
-            if #squaresInARow > 0 then
-               if squaresInARow[1].color == square.color then
-                  table.insert(squaresInARow, square)
-               else
-                  squaresInARow = {square}
-               end
-            else
-               table.insert(squaresInARow, square)
-            end
+            squaresInARow = self:addOrRestartChain(self:getSquare(x, y), squaresInARow)
          else 
             squaresInARow = {}
          end
 
          if #squaresInARow > 2 then
-            for i,square in ipairs(squaresInARow) do
-               table.insert(squares, square)
-            end
+            squares = _.concat(squares, squaresInARow)
          end
       end
 	 end
    return squares
+end
+
+function Board:addOrRestartChain(square, squaresInARow)
+   if #squaresInARow > 0 and squaresInARow[1].color == square.color then
+      _.push(squaresInARow, square)
+   else
+      squaresInARow = {square}
+   end
+   return squaresInARow
 end

@@ -16,6 +16,7 @@ function Square:init(x, y, color, board)
 	 
 	 self.board = board
 	 self.isDropping = false
+	 self.isFlashing = false
 	 self.dropped = false
 end
 
@@ -45,12 +46,20 @@ function Square:update()
 	 end
 end
 
+function Square:startDisappearing()
+	 self.isFlashing = true
+	 self.yum = function() self.disappear = true end
+	 timer.performWithDelay( 2000, self.yum )
+end
+
 function Square:setColor(color)
 	 if color == 'random' then
 			local colors = {'green', 'yellow', 'red', 'blue', 'pink', 'cyan'}
 			color = colors[math.random(1, #colors)]
 	 end
+	 color = 'green'
 
+	 self.color = color
 	 if color == 'red' then
 			self.square:setFillColor(255, 0, 0)
 	 elseif color == 'yellow' then

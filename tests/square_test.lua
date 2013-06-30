@@ -35,3 +35,12 @@ function test_the_square_lands_on_top_of_other_squares()
    assert_equal(11, square.gridY)
    assert_equal(square, square.board:getSquare(square.gridX, square.gridY))
 end
+
+function test_the_square_disappears_after_3_seconds()
+   square = Square(5, 12, 'green', square.board)
+   square:startDisappearing()
+   for x=0,100 do
+      square:update()
+   end
+   assert_true(square.disappear)
+end

@@ -35,4 +35,5 @@ function MainGame:mainGameLoop()
    end
 
    self.dropSquare:update()
+   self.board:update()
 end

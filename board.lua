@@ -18,7 +18,7 @@ function Board:isGameOver()
 end
 
 function Board:isSpotFilled(x, y)
-	 return self.board[x][y]
+	 return self.board[x][y] and self:getSquare(x, y).isDropping == false
 end
 
 function Board:getSquare(x, y)
@@ -66,12 +66,10 @@ function Board:allSquares()
    local squares = {}
    for x=1,9 do
       for y=1,12 do
-         if self:isSpotFilled(x, y) then
-            _.push(squares, self:getSquare(x, y))
-         end
+         _.push(squares, self:getSquare(x, y))
       end
    end
-   return squares
+   return _.compact(squares)
 end
 
 function Board:findSquaresInARow()
@@ -90,6 +88,7 @@ function Board:findSquaresInARow()
          end
       end
 	 end
+   
    return squares
 end
 

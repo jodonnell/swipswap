@@ -42,19 +42,23 @@ function Board:anythingBelow(x, y)
 end
 
 function Board:update()
-   local squares = self:findSquaresInARow()
-   
-   for i,square in ipairs(squares) do
-      if not square.isFlashing then
-         square:startDisappearing()
-      end
-   end
+   self:findAndRemoveSquaresInARow()
 
    for i,square in ipairs(self:allSquares()) do
       if square.isDropping == false and not square:anythingBelow() then
          square:drop()
       end
       square:update()
+   end
+end
+
+function Board:findAndRemoveSquaresInARow()
+   local squares = self:findSquaresInARow()
+   
+   for i,square in ipairs(squares) do
+      if not square.isFlashing then
+         square:startDisappearing()
+      end
    end
 end
 

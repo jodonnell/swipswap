@@ -21,13 +21,15 @@ end
 function MainGame:mainGameLoop()
    if self.board:isGameOver() then return end
 
-   if self.control.x then
-      self.dropSquare:moveTo(self.control.x)
-   end
+   if self.dropSquare.isDropping == false then
+      if self.control.x then
+         self.dropSquare:moveTo(self.control.x)
+      end
 
-   if self.control.endTouch then
-      self.control.endTouch = nil
-      self.dropSquare:drop()
+      if self.control.endTouch then
+         self.control.endTouch = nil
+         self.dropSquare:drop()
+      end
    end
 
    if self.dropSquare.dropped then

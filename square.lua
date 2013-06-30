@@ -31,7 +31,6 @@ end
 
 function Square:drop()
 	 self.isDropping = true
-	 self.board:clearSquare(self)
 end
 
 function Square:update()
@@ -39,21 +38,22 @@ function Square:update()
 			self:moveDown()
 	 end
 
-	 if self:anythingBelow() then
+	 if self.isDropping and self:anythingBelow() then
 			self:hitBottom()
 	 end
 end
 
 function Square:moveDown()
+	 self.board:clearSquare(self)
 	 self.square.y = self.square.y + 15
 	 self.gridY = gridConversion:pixelsToGrid(self.square.y)
+	 self.board:setSquare(self)
 end
 
 function Square:hitBottom()
 	 self.isDropping = false
 	 self.dropped = true
 	 self.square.y = gridConversion:gridToPixels(self.gridY)
-	 self.board:setSquare(self)
 end
 
 function Square:anythingBelow()

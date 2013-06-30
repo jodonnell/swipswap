@@ -24,6 +24,7 @@ function MainGame:mainGameLoop()
    if self.control.x then
       self.dropSquare:moveTo(self.control.x)
    end
+
    if self.control.endTouch then
       self.control.endTouch = nil
       self.dropSquare:drop()

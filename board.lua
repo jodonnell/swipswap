@@ -6,10 +6,14 @@ Board = class()
 
 function Board:init()
 	 self.board = {}
-	 for x=1,9 do
+	 for x=1,self:endOfBoard() do
       self.board[x] = {}
-      for y=1,12 do
-				 self.board[x][y] = false
+      for y=1,self:bottomOfBoard() do
+         if x == self:endOfBoard() then
+            self.board[x][y] = Square(x, y, 'random', self)
+         else
+            self.board[x][y] = false
+         end
       end
 	 end
 end
@@ -33,12 +37,16 @@ function Board:clearSquare(square)
 	 self.board[square.gridX][square.gridY] = nil
 end
 
-function Board:bottomOfGrid()
-   return 12
+function Board:endOfBoard()
+   return 9
+end
+
+function Board:bottomOfBoard()
+   return 7
 end
 
 function Board:anythingBelow(x, y)
-   return y == self:bottomOfGrid() or self:getSquare(x, y + 1)
+   return x == self:endOfBoard() or self:getSquare(x + 1, y)
 end
 
 function Board:update()

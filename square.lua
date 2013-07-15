@@ -31,10 +31,6 @@ function Square:finishedDropping()
 	 self.isDropping = false
 end
 
-function Square:drop()
-	 self.isDropping = true
-end
-
 function Square:update()
 	 if self.isDropping then
 			self:moveDown()
@@ -47,15 +43,15 @@ end
 
 function Square:moveDown()
 	 self.board:clearSquare(self)
-	 self.square.y = self.square.y + 15
-	 self.gridY = gridConversion:pixelsToGrid(self.square.y)
+	 self.square.x = self.square.x + 15
+	 self.gridX = gridConversion:pixelsToGrid(self.square.x)
 	 self.board:setSquare(self)
 end
 
 function Square:hitBottom()
 	 self.isDropping = false
 	 self.dropped = true
-	 self.square.y = gridConversion:gridToPixels(self.gridY)
+	 self.square.x = gridConversion:gridToPixels(self.gridX)
 end
 
 function Square:anythingBelow()
@@ -82,6 +78,10 @@ function Square:endDisappearing()
 	 timer.cancel(self.blinkingTimer)
 	 self.square:removeSelf()
 	 self.board:clearSquare(self)
+end
+
+function Square:drop()
+	 self.isDropping = true
 end
 
 function Square:setColor(color)

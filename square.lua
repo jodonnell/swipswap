@@ -43,15 +43,15 @@ end
 
 function Square:moveDown()
 	 self.board:clearSquare(self)
-	 self.square.x = self.square.x + 15
-	 self.gridX = gridConversion:pixelsToGrid(self.square.x)
+	 self.square.y = self.square.y + 15
+	 self.gridY = gridConversion:pixelsToGrid(self.square.y)
 	 self.board:setSquare(self)
 end
 
 function Square:hitBottom()
 	 self.isDropping = false
 	 self.dropped = true
-	 self.square.x = gridConversion:gridToPixels(self.gridX)
+	 self.square.y = gridConversion:gridToPixels(self.gridY)
 end
 
 function Square:anythingBelow()

@@ -9,7 +9,7 @@ function Board:init()
 	 for x=1,self:endOfBoard() do
       self.board[x] = {}
       for y=1,self:bottomOfBoard() do
-         if x == self:endOfBoard() then
+         if y == self:bottomOfBoard() then
             self.board[x][y] = Square(x, y, 'random', self)
          else
             self.board[x][y] = false
@@ -42,11 +42,11 @@ function Board:endOfBoard()
 end
 
 function Board:bottomOfBoard()
-   return 7
+   return 12
 end
 
 function Board:anythingBelow(x, y)
-   return x == self:endOfBoard() or self:getSquare(x + 1, y)
+   return y == self:bottomOfBoard() or self:getSquare(x, y + 1)
 end
 
 function Board:update()

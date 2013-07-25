@@ -7,6 +7,25 @@ function setup()
    board = Board()
 end
 
+function test_starts_with_a_row()
+   local bottom = board:bottomOfBoard()
+
+   for i= 1, board:rightOfBoard() do
+      assert_true(board:getSquare(i, bottom))
+   end
+end
+
+function test_slowly_gains_new_row()
+   local bottom = board:bottomOfBoard()
+   assert_false(board:getSquare(1, bottom - 1))
+
+   for i= 1, 200 do
+      board:update()
+   end
+   assert_true(board:getSquare(1, bottom - 1))
+end
+
+
 function test_the_board_can_find_three_in_a_row()
    square1 = Square(1, 1, 'red', board)
    square2 = Square(2, 1, 'red', board)

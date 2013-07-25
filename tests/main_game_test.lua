@@ -7,11 +7,20 @@ function setup()
    mainGame = MainGame(Control())
 end
 
-function test_starts_with_a_row()
-   local endSpot = mainGame.board:endOfBoard()
+function test_that_swiping_on_a_block_lifts_it_to_top()
+   assert_true(mainGame.board:getSquare(1, mainGame.board:bottomOfBoard()))
 
-   for i= 1, mainGame.board:bottomOfBoard() do
-      assert_true(mainGame.board:isSpotFilled(mainGame.board:endOfBoard(), i))
-   end
+   mainGame.control.x = 1
+   mainGame.control.y = mainGame.board:bottomOfBoard()
+   mainGame.control.startTouch = true
+
+   mainGame:update()
+
+   mainGame.control.y = mainGame.board:bottomOfBoard() - 1
+   mainGame:update()
+
+   mainGame.control.endTouch = true
+   mainGame:update()
+
+   assert_false(mainGame.board:getSquare(1, mainGame.board:bottomOfBoard()))
 end
-

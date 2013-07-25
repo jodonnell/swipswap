@@ -27,13 +27,38 @@ function Square:moveTo(x)
 	 self.gridX = x
 end
 
+function Square:moveToY(y)
+	 self.board:clearSquare(self)
+	 self.gridY = y
+	 self.square.y = gridConversion:gridToPixels(y)
+	 self.board:setSquare(self)
+end
+
 function Square:finishedDropping()
 	 self.isDropping = false
+end
+
+function Square:removeFromBoard()
+   self.board:clearSquare(self)
+end
+
+function Square:addToBoardFromTop(x)
+   self.gridY = 1
+   self:moveTo(x)
+   self.board:setSquare(self)
+end
+
+function Square:goToTop()
+   self.isMovingUp = true
 end
 
 function Square:update()
 	 if self.isDropping then
 			self:moveDown()
+	 end
+
+	 if self.isMovingUp then
+			self:moveUp()
 	 end
 
 	 if self.isDropping and self:anythingBelow() then
@@ -46,6 +71,14 @@ function Square:moveDown()
 	 self.square.y = self.square.y + 15
 	 self.gridY = gridConversion:pixelsToGrid(self.square.y)
 	 self.board:setSquare(self)
+end
+
+function Square:moveUp()
+	 self.square.y = self.square.y - 30
+   if self.square.y <= 0 then
+      self.isMovingUp = false
+      self.square.y = 0
+   end
 end
 
 function Square:hitBottom()

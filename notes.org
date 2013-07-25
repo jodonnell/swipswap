@@ -1,11 +1,11 @@
 * Game
-** One layer of blocks starts on the right
-** Slowly more blocks start pushing in from the right, advancing left
+** DONE One layer of blocks starts on the bottom
+** Slowly more blocks start pushing in from the bottom, advancing up
 ** Instead of blocks, some are creatures
 ** If creatures are uncovered, they begin rushing towards you
 ** If creature reaches you, you die
-** You can swipe left on uncovered block to move it to left side of screen
-** You can swipe right to send a block back to the right (is sent in same row you swipe on)
+** You can swipe up on uncovered block to move it to top side of screen
+** You can swipe down to send a block back to the bottom (is sent in same row you swipe on)
 ** Three in a row of same color makes blocks/monsters disappear
 ** Monsters can chew through block in front of them
 ** Things gradually speed up as you kill more monsters

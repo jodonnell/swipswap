@@ -15,10 +15,10 @@ end
 display.setStatusBar( display.HiddenStatusBar )
 
 control = Control()
-local main_game = MainGame(control)
+local mainGame = MainGame(control)
 
 function loop()
-   main_game:mainGameLoop()
+   mainGame:update()
 end
 
 Runtime:addEventListener( "enterFrame", loop )
@@ -32,8 +32,8 @@ local function onScreenTouch( event )
      control.x = gridConversion:pixelsToGrid(event.x)
      control.y = gridConversion:pixelsToGrid(event.y)
   elseif event.phase == "ended" or event.phase == "cancelled" then
-     control.x = nil
-     control.y = nil
+     control.x = gridConversion:pixelsToGrid(event.x)
+     control.y = gridConversion:pixelsToGrid(event.y)
      control.endTouch = true
   end
 

@@ -19,6 +19,8 @@ function test_that_swiping_on_a_block_lifts_it_to_top()
    mainGame.control.y = mainGame.board:bottomOfBoard() - 1
    mainGame:update()
 
+   assert_true(mainGame.board:getSquare(1, mainGame.board:bottomOfBoard()))
+
    mainGame.control.endTouch = true
    mainGame:update()
 

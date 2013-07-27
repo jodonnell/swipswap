@@ -53,6 +53,11 @@ function Square:goToTop()
 end
 
 function Square:update()
+  if self:shouldDrop() then
+    self:drop()
+  end
+
+
 	 if self.isDropping then
 			self:moveDown()
 	 end
@@ -113,13 +118,18 @@ function Square:endDisappearing()
 	 self.board:clearSquare(self)
 end
 
+function Square:shouldDrop()
+  return self.isDropping == false and not self:anythingBelow()
+end
+
 function Square:drop()
 	 self.isDropping = true
 end
 
 function Square:setColor(color)
 	 if color == 'random' then
-			color = _.first(_.shuffle({'green', 'yellow', 'red', 'blue', 'pink', 'cyan'}))
+     --color = _.first(_.shuffle({'green', 'yellow', 'red', 'blue', 'pink', 'cyan'}))
+     color = _.first(_.shuffle({'green', 'yellow', 'red'}))
 	 end
 
 	 self.color = color

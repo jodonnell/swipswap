@@ -56,14 +56,11 @@ function Board:update()
    self.offset = self.offset + 1
 
    for i,square in ipairs(self:allSquares()) do
-      if square.isDropping == false and not square:anythingBelow() then
-         square:drop()
-      end
-      square:update()
+     square:update()
 
-      if self.offset % 4 == 0 then
-         square.square.y = square.square.y - 1
-      end
+     if self.offset % 4 == 0 then
+       square.square.y = square.square.y - 1
+     end
    end
 
 
@@ -86,7 +83,10 @@ end
 
 function Board:findAndRemoveSquaresInARow()
    local squares = self:findSquaresInARow()
-   
+   self:removeSquares(squares)
+end
+
+function Board:removeSquares(squares)
    for i,square in ipairs(squares) do
       if not square.isFlashing then
          square:startDisappearing()

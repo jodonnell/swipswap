@@ -64,21 +64,25 @@ function Board:update()
     end
   end
 
-
   if self.offset == SQUARE_SIZE * 4 then
-    for x=1,self:rightOfBoard() do
-      for y=1,self:bottomOfBoard() do
-        local square = self:getSquare(x, y)
-        if square then
-          square:moveToY(square.gridY - 1)
-        end
+    self:moveAllSquaresUp()
+    self.offset = 0
+  end
+end
 
-        if y == self:bottomOfBoard() then
-          self.board[x][y] = Square(x, y, 'random', self)
-        end
+
+function Board:moveAllSquaresUp()
+  for x=1,self:rightOfBoard() do
+    for y=1,self:bottomOfBoard() do
+      local square = self:getSquare(x, y)
+      if square then
+        square:moveToY(square.gridY - 1)
+      end
+
+      if y == self:bottomOfBoard() then
+        self.board[x][y] = Square(x, y, 'random', self)
       end
     end
-    self.offset = 0
   end
 end
 

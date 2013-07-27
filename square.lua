@@ -4,16 +4,11 @@ require 'global'
 Square = class()
 
 function Square:init(x, y, color, board)
-  self.squareSize = display.contentWidth / 9
-
-  self.square = display.newRoundedRect(0, 0, self.squareSize, self.squareSize, 4)
+  self.square = display.newRoundedRect(0, 0, SQUARE_SIZE, SQUARE_SIZE, 4)
   self:setColor(color)
 
-  self.gridX = x
-  self.gridY = y
-
-  self.square.x = gridToPixels(x)
-  self.square.y = gridToPixels(y)
+  self:setGridX(x)
+  self:setGridY(y)
   
   self.board = board
   self.isDropping = false
@@ -23,15 +18,23 @@ function Square:init(x, y, color, board)
   self.square.strokeWidth = 1
 end
 
-function Square:moveTo(x)
-  self.square.x = gridToPixels(x)
+function Square:setGridX(x)
   self.gridX = x
+  self.square.x = gridToPixels(x)
+end
+
+function Square:setGridY(y)
+  self.gridY = y
+  self.square.y = gridToPixels(y)
+end
+
+function Square:moveTo(x)
+  self:setGridX(x)
 end
 
 function Square:moveToY(y)
   self.board:clearSquare(self)
-  self.gridY = y
-  self.square.y = gridToPixels(y)
+  self:setGridY(y)
   self.board:setSquare(self)
 end
 

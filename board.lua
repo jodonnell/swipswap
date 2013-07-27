@@ -74,8 +74,8 @@ end
 function Board:moveAllSquaresUp()
   for x=1,self:rightOfBoard() do
     for y=1,self:bottomOfBoard() do
-      local square = self:getSquare(x, y)
-      if square then
+      if self:isSpotFilled(x, y) then
+        local square = self:getSquare(x, y)
         square:moveToY(square.gridY - 1)
       end
 

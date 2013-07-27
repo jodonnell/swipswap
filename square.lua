@@ -28,18 +28,10 @@ function Square:setGridY(y)
   self.square.y = gridToPixels(y)
 end
 
-function Square:moveTo(x)
-  self:setGridX(x)
-end
-
 function Square:moveToY(y)
   self.board:clearSquare(self)
   self:setGridY(y)
   self.board:setSquare(self)
-end
-
-function Square:finishedDropping()
-  self.isDropping = false
 end
 
 function Square:removeFromBoard()
@@ -60,7 +52,6 @@ function Square:update()
   if self:shouldDrop() then
     self:drop()
   end
-
 
   if self.isDropping then
     self:moveDown()

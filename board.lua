@@ -1,4 +1,5 @@
 require 'class'
+require 'global'
 _ = require 'underscore'
 
 
@@ -64,7 +65,7 @@ function Board:update()
   end
 
 
-  if self.offset == self:allSquares()[1].squareSize * 4 then
+  if self.offset == SQUARE_SIZE * 4 then
     for x=1,self:rightOfBoard() do
       for y=1,self:bottomOfBoard() do
         local square = self:getSquare(x, y)

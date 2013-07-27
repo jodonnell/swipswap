@@ -1,4 +1,5 @@
 require 'class'
+require 'global'
 
 Square = class()
 
@@ -11,8 +12,8 @@ function Square:init(x, y, color, board)
   self.gridX = x
   self.gridY = y
 
-  self.square.x = gridConversion:gridToPixels(x)
-  self.square.y = gridConversion:gridToPixels(y)
+  self.square.x = gridToPixels(x)
+  self.square.y = gridToPixels(y)
   
   self.board = board
   self.isDropping = false
@@ -23,14 +24,14 @@ function Square:init(x, y, color, board)
 end
 
 function Square:moveTo(x)
-  self.square.x = gridConversion:gridToPixels(x)
+  self.square.x = gridToPixels(x)
   self.gridX = x
 end
 
 function Square:moveToY(y)
   self.board:clearSquare(self)
   self.gridY = y
-  self.square.y = gridConversion:gridToPixels(y)
+  self.square.y = gridToPixels(y)
   self.board:setSquare(self)
 end
 
@@ -74,7 +75,7 @@ end
 function Square:moveDown()
   self.board:clearSquare(self)
   self.square.y = self.square.y + 15
-  self.gridY = gridConversion:pixelsToGrid(self.square.y)
+  self.gridY = pixelsToGrid(self.square.y)
   self.board:setSquare(self)
 end
 
@@ -89,7 +90,7 @@ end
 function Square:hitBottom()
   self.isDropping = false
   self.dropped = true
-  self.square.y = gridConversion:gridToPixels(self.gridY)
+  self.square.y = gridToPixels(self.gridY)
 end
 
 function Square:anythingBelow()

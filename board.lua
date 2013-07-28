@@ -79,11 +79,7 @@ function Board:newSquareInRow(x)
 end
 
 function Board:allSquares()
-  local squares = {}
-  for x=1,self:rightOfBoard() do
-    _.push(squares, self.board[x])
-  end
-  return _.flatten(squares)
+  return _.flatten(self.board)
 end
 
 -- function Board:findAndRemoveSquaresInARow()

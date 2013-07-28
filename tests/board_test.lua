@@ -19,6 +19,33 @@ function test_can_get_all_squares()
   _.each(board:allSquares(), function(square)
     assert_true(square:is_a(Square))
   end)
+end 
+
+function test_shouldCreateNewRow()
+  board.tick = SQUARE_SIZE * 4 - 1
+  assert_false(board:shouldCreateNewRow())
+
+  board.tick = SQUARE_SIZE * 4
+  assert_true(board:shouldCreateNewRow())
+end 
+
+function test_createNewRow()
+  assert_equal(board:rightOfBoard(), #board:allSquares())
+  board:createNewRow()
+  assert_equal(board:rightOfBoard() * 2, #board:allSquares())
+end
+
+function test_newSquareInRow()
+  assert_equal(1, #board:getRow(1))
+  board:newSquareInRow(1)
+  assert_equal(2, #board:getRow(1))
+end
+
+
+function test_update()
+  board.shouldCreateNewRow = function() return true end
+  board:update()
+  assert_equal(board:rightOfBoard() * 2, #board:allSquares())
 end
 
 -- function test_slowly_gains_new_row()

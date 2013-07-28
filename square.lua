@@ -100,6 +100,10 @@ function Square:blink()
 end
 
 function Square:startDisappearing()
+  if self.isFlashing then
+    return
+  end
+
   self.isFlashing = true
 
   transition.to( self.square, {time=140, alpha=0.1})

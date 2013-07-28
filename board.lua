@@ -93,9 +93,7 @@ end
 
 function Board:removeSquares(squares)
   for i,square in ipairs(squares) do
-    if not square.isFlashing then
-      square:startDisappearing()
-    end
+    square:startDisappearing()
   end
 end
 

@@ -8,7 +8,7 @@ function Square:init(x, y, color, board)
   self:setColor(color)
 
   self:setGridX(x)
-  self:setGridY(y)
+  self.square.y = y
   
   self.board = board
   self.isDropping = false
@@ -48,22 +48,26 @@ function Square:goToTop()
   self.isMovingUp = true
 end
 
-function Square:update()
-  if self:shouldDrop() then
-    self:drop()
+function Square:update(moveUp)
+  if moveUp then
+    self.square.y = self.square.y - 1
   end
 
-  if self.isDropping then
-    self:moveDown()
-  end
+  -- if self:shouldDrop() then
+  --   self:drop()
+  -- end
 
-  if self.isMovingUp then
-    self:moveUp()
-  end
+  -- if self.isDropping then
+  --   self:moveDown()
+  -- end
 
-  if self.isDropping and self:anythingBelow() then
-    self:hitBottom()
-  end
+  -- if self.isMovingUp then
+  --   self:moveUp()
+  -- end
+
+  -- if self.isDropping and self:anythingBelow() then
+  --   self:hitBottom()
+  -- end
 end
 
 function Square:moveDown()
@@ -87,9 +91,9 @@ function Square:hitBottom()
   self.square.y = gridToPixels(self.gridY)
 end
 
-function Square:anythingBelow()
-  return self.board:anythingBelow(self.gridX, self.gridY)
-end
+-- function Square:anythingBelow()
+--   return self.board:anythingBelow(self.gridX, self.gridY)
+-- end
 
 function Square:blink()
   if(self.square.alpha < 1) then

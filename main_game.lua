@@ -8,8 +8,6 @@ function MainGame:init(control)
   self.control = control
 
   self.board = Board()
-  self.lifted = false
-  self.clickedOnSquare = nil
 end
 
 

@@ -37,9 +37,9 @@ function Board:rightOfBoard()
   return 9
 end
 
--- function Board:bottomOfBoard()
---   return 13
--- end
+function Board:bottomOfBoard()
+  return 13
+end
 
 -- function Board:anythingBelow(x, y)
 --   return y == self:bottomOfBoard() or self:getSquare(x, y + 1)
@@ -93,30 +93,34 @@ end
 --   end
 -- end
 
--- function Board:findSquaresInARow()
---   local squares = {}
---   for y=1,self:bottomOfBoard() do
---     local squaresInARow = {}
---     for x=1,self:rightOfBoard() do
---       if self:isSpotFilled(x, y) then
---         squaresInARow = self:addOrRestartChain(self:getSquare(x, y), squaresInARow)
---       else 
---         squaresInARow = {}
---       end
+function Board:findSquaresInARow()
+  local squares = {}
+  for y=1,self:bottomOfBoard() do
+    local squaresInARow = {}
+    for x=1,self:rightOfBoard() do
+      -- _.each(self.board[x], function
+                 
+      -- end)
 
---       if #squaresInARow > 2 then
---         squares = _.concat(squares, squaresInARow)
---       end
---     end
---   end
---   return squares
--- end
+      if #self:getRow(x) >= y then
+        squaresInARow = self:addOrRestartChain(self:getRow(x)[y], squaresInARow)
+      else 
+        squaresInARow = {}
+      end
 
--- function Board:addOrRestartChain(square, squaresInARow)
---   if #squaresInARow > 0 and squaresInARow[1].color == square.color then
---     _.push(squaresInARow, square)
---   else
---     squaresInARow = {square}
---   end
---   return squaresInARow
--- end
+      if #squaresInARow >= 3 then
+        squares = _.concat(squares, squaresInARow)
+      end
+    end
+  end
+  return squares
+end
+
+function Board:addOrRestartChain(square, squaresInARow)
+  if #squaresInARow > 0 and squaresInARow[1].color == square.color then
+    _.push(squaresInARow, square)
+  else
+    squaresInARow = {square}
+  end
+  return squaresInARow
+end

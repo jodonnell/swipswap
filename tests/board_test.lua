@@ -41,6 +41,21 @@ function test_newSquareInRow()
   assert_equal(2, #board:getRow(1))
 end
 
+function test_clearSquare()
+  local removeSquare = board.board[1][1]
+  board:clearSquare(removeSquare)
+  assert_equal(0, #board.board[1])
+end
+
+function test_removeSquares()
+  local square = board.board[1][1]
+  local called = false
+  square.startDisappearing = function() called = true end
+  board:removeSquares({square})
+
+  assert_true(called)
+end
+
 
 function test_update()
   board.shouldCreateNewRow = function() return true end
@@ -74,19 +89,15 @@ function test_the_board_does_not_false_postive()
   assert_false(_.include(squares, board.board[3][1]))
 end
 
--- function test_the_squares_must_be_contiguous()
---   square1 = Square(1, 1, 'red', board)
---   square2 = Square(2, 1, 'red', board)
---   square3 = Square(3, 1, 'red', board)
+function test_the_squares_must_be_contiguous()
+  board.board[1][1].color = 'red'
+  board.board[2][1].color = 'red'
+  board.board[3][1].color = 'red'
+  board.board[4][1].color = 'yellow'
+  board.board[5][1].color = 'red'
+  board.board[6][1].color = 'yellow'
 
---   square5 = Square(5, 1, 'red', board)
+  local squares = board:findSquaresInARow()
 
---   board:setSquare(square1)
---   board:setSquare(square2)
---   board:setSquare(square3)
---   board:setSquare(square5)
-
---   local squares = board:findSquaresInARow()
-
---   assert_false(_.include(squares, square5))
--- end
+  assert_false(_.include(squares, board.board[5][1]))
+end

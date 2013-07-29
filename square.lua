@@ -127,31 +127,31 @@ end
 --   return self.board:anythingBelow(self.gridX, self.gridY)
 -- end
 
--- function Square:blink()
---   if(self.square.alpha < 1) then
---     transition.to( self.square, {time=140, alpha=1})
---   else 
---     transition.to( self.square, {time=140, alpha=0.1})
---   end
--- end
+function Square:blink()
+  if(self.square.alpha < 1) then
+    transition.to( self.square, {time=140, alpha=1})
+  else 
+    transition.to( self.square, {time=140, alpha=0.1})
+  end
+end
 
--- function Square:startDisappearing()
---   if self.isFlashing then
---     return
---   end
+function Square:startDisappearing()
+  if self.isFlashing then
+    return
+  end
 
---   self.isFlashing = true
+  self.isFlashing = true
 
---   transition.to( self.square, {time=140, alpha=0.1})
---   self.blinkingTimer = timer.performWithDelay( 150, function() self:blink() end, 0 )
---   timer.performWithDelay( 2000, function() self:endDisappearing() end )
--- end
+  transition.to( self.square, {time=140, alpha=0.1})
+  self.blinkingTimer = timer.performWithDelay( 150, function() self:blink() end, 0 )
+  timer.performWithDelay( 2000, function() self:endDisappearing() end )
+end
 
--- function Square:endDisappearing()
---   timer.cancel(self.blinkingTimer)
---   self.square:removeSelf()
---   self.board:clearSquare(self)
--- end
+function Square:endDisappearing()
+  timer.cancel(self.blinkingTimer)
+  self.square:removeSelf()
+  self.board:clearSquare(self)
+end
 
 -- function Square:shouldDrop()
 --   return self.isDropping == false and not self:anythingBelow()

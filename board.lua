@@ -29,9 +29,11 @@ end
 --   self.board[square.gridX][square.gridY] = square
 -- end
 
--- function Board:clearSquare(square)
---   self.board[square.gridX][square.gridY] = nil
--- end
+function Board:clearSquare(squareToRemove)
+  self.board[squareToRemove.gridX] = _.reject(self.board[squareToRemove.gridX], function(square) 
+             return square == squareToRemove 
+  end)
+end
 
 function Board:rightOfBoard()
   return 9
@@ -46,7 +48,7 @@ end
 -- end
 
 function Board:update()
-  -- self:findAndRemoveSquaresInARow()
+  self:findAndRemoveSquaresInARow()
 
   self.tick = self.tick + 1
 
@@ -82,26 +84,22 @@ function Board:allSquares()
   return _.flatten(self.board)
 end
 
--- function Board:findAndRemoveSquaresInARow()
---   local squares = self:findSquaresInARow()
---   self:removeSquares(squares)
--- end
+function Board:findAndRemoveSquaresInARow()
+  local squares = self:findSquaresInARow()
+  self:removeSquares(squares)
+end
 
--- function Board:removeSquares(squares)
---   for i,square in ipairs(squares) do
---     square:startDisappearing()
---   end
--- end
+function Board:removeSquares(squares)
+  for i,square in ipairs(squares) do
+    square:startDisappearing()
+  end
+end
 
 function Board:findSquaresInARow()
   local squares = {}
   for y=1,self:bottomOfBoard() do
     local squaresInARow = {}
     for x=1,self:rightOfBoard() do
-      -- _.each(self.board[x], function
-                 
-      -- end)
-
       if #self:getRow(x) >= y then
         squaresInARow = self:addOrRestartChain(self:getRow(x)[y], squaresInARow)
       else 

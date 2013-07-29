@@ -295,6 +295,12 @@ function _.invoke(list, func, ...)
   end)
 end
 
+function _.invokeObj(list, function_name, ...)
+	local args = {...}
+	_.each(list, function(i) i[function_name](i, unpack(args)) end)
+	return list
+end
+
 function _.sortBy(list, func)
   func = func or _.identity
   local sorted_func = function(a,b)

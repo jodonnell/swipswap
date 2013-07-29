@@ -90,9 +90,7 @@ function Board:findAndRemoveSquaresInARow()
 end
 
 function Board:removeSquares(squares)
-  for i,square in ipairs(squares) do
-    square:startDisappearing()
-  end
+  _.invokeObj(squares, "startDisappearing")
 end
 
 function Board:findSquaresInARow()

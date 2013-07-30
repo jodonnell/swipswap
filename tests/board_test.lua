@@ -56,6 +56,22 @@ function test_removeSquares()
   assert_true(called)
 end
 
+function test_checkForSquaresToBeginFalling()
+  board:newSquareInRow(1)
+  board:newSquareInRow(1)
+
+  local square = board.board[1][1]
+  square.square.y = 0
+
+  board.board[1][2].square.y = board.board[1][3].square.y - SQUARE_SIZE
+
+  board:checkForSquaresToBeginFalling()
+
+  assert_true(square.isFalling)
+  assert_false(board.board[1][2].isFalling)
+  assert_false(board.board[1][3].isFalling)
+end
+
 
 function test_update()
   board.shouldCreateNewRow = function() return true end

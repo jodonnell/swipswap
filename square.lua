@@ -14,6 +14,7 @@ function Square:init(x, y, color, board)
   self.square.y = y
   
   self.board = board
+  self.isFalling = false
   -- self.isDropping = false
   -- self.isFlashing = false
   -- self.dropped = false
@@ -33,8 +34,12 @@ function Square:y()
 end
 
 function Square:update(moveUp)
-  if moveUp then
+  if self:shouldMoveUp(moveUp) then
     self.square.y = self.square.y - 1
+  end
+
+  if self.isFalling then
+    self:fall()
   end
 
   -- if self:shouldDrop() then
@@ -52,6 +57,14 @@ function Square:update(moveUp)
   -- if self.isDropping and self:anythingBelow() then
   --   self:hitBottom()
   -- end
+end
+
+function Square:shouldMoveUp(moveUp)
+  return moveUp and not self.isFalling
+end
+
+function Square:fall()
+  self.square.y = self.square.y + 10
 end
 
 function Square:setColor(color)

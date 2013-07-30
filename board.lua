@@ -52,14 +52,33 @@ function Board:update()
 
   self.tick = self.tick + 1
 
-  for i,square in ipairs(self:allSquares()) do
+  _.each(self:allSquares(), function(square) 
     square:update(self:shouldMoveSquareUp())
-  end
+  end)
+
+  self:checkForSquaresToBeginFalling()
+  self:checkForSquaresToStopFalling()
 
   if self:shouldCreateNewRow() then
     self:createNewRow()
     self.tick = 0
   end
+end
+
+function Board:checkForSquaresToBeginFalling()
+  for x=1,self:rightOfBoard() do
+    if #self.board[x] > 1 then
+      for y=2, #self.board[x] do
+        if math.abs(self.board[x][y - 1]:y() - self.board[x][y]:y()) > SQUARE_SIZE then
+          self.board[x][y - 1].isFalling = true
+        end
+      end
+    end
+  end
+end
+
+function Board:checkForSquaresToStopFalling()
+
 end
 
 function Board:shouldMoveSquareUp()

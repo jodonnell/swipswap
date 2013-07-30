@@ -21,7 +21,7 @@ end
 --   return self.board[x][y] and self:getSquare(x, y).isDropping == false
 -- end
 
-function Board:getRow(x)
+function Board:getColumn(x)
   return self.board[x]
 end
 
@@ -126,8 +126,8 @@ function Board:findSquaresInARow()
   for y=1,self:bottomOfBoard() do
     local squaresInARow = {}
     for x=1,self:rightOfBoard() do
-      if #self:getRow(x) >= y then
-        squaresInARow = self:addOrRestartChain(self:getRow(x)[y], squaresInARow)
+      if #self:getColumn(x) >= y then
+        squaresInARow = self:addOrRestartChain(self:getColumn(x)[y], squaresInARow)
       else 
         squaresInARow = {}
       end

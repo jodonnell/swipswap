@@ -9,7 +9,7 @@ end
 
 function test_starts_with_a_row()
   for i = 1, board:rightOfBoard() do
-    assert_equal(1, #board:getRow(i))
+    assert_equal(1, #board:getColumn(i))
   end
 end
 
@@ -36,9 +36,9 @@ function test_createNewRow()
 end
 
 function test_newSquareInRow()
-  assert_equal(1, #board:getRow(1))
+  assert_equal(1, #board:getColumn(1))
   board:newSquareInRow(1)
-  assert_equal(2, #board:getRow(1))
+  assert_equal(2, #board:getColumn(1))
 end
 
 function test_clearSquare()

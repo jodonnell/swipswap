@@ -57,7 +57,7 @@ function Board:update()
   end)
 
   self:checkForSquaresToBeginFalling()
-  self:checkForSquaresToStopFalling()
+  self:checkForSquaresToEndFalling()
 
   if self:shouldCreateNewRow() then
     self:createNewRow()
@@ -77,8 +77,17 @@ function Board:checkForSquaresToBeginFalling()
   end
 end
 
-function Board:checkForSquaresToStopFalling()
-
+function Board:checkForSquaresToEndFalling()
+  for x=1,self:rightOfBoard() do
+    if #self.board[x] > 1 then
+      for y=2, #self.board[x] do
+        if math.abs(self.board[x][y - 1]:y() - self.board[x][y]:y()) < SQUARE_SIZE then
+          self.board[x][y - 1].isFalling = false
+          self.board[x][y - 1]:setY(self.board[x][y]:y() - SQUARE_SIZE)
+        end
+      end
+    end
+  end
 end
 
 function Board:shouldMoveSquareUp()

@@ -25,6 +25,10 @@ function Square:setGridX(x)
   self.square.x = gridToPixels(x)
 end
 
+function Square:setY(y)
+  self.square.y = y
+end
+
 function Square:x()
   return self.square.x
 end

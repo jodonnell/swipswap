@@ -72,6 +72,19 @@ function test_checkForSquaresToBeginFalling()
   assert_false(board.board[1][3].isFalling)
 end
 
+function test_checkForSquaresToEndFalling()
+  board:newSquareInRow(1)
+
+  local square = board.board[1][1]
+  square.isFalling = true
+  square.square.y = board.board[1][2].square.y - SQUARE_SIZE + 1
+
+  board:checkForSquaresToEndFalling()
+
+  assert_false(square.isFalling)
+  assert_equal(board.board[1][2].square.y - SQUARE_SIZE, square:y())
+end
+
 
 function test_update()
   board.shouldCreateNewRow = function() return true end

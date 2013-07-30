@@ -60,29 +60,29 @@ function test_checkForSquaresToBeginFalling()
   board:newSquareInRow(1)
   board:newSquareInRow(1)
 
-  local square = board.board[1][1]
+  local square = board.board[1][3]
   square.square.y = 0
 
-  board.board[1][2].square.y = board.board[1][3].square.y - SQUARE_SIZE
+  board.board[1][2].square.y = board.board[1][1].square.y - SQUARE_SIZE
 
   board:checkForSquaresToBeginFalling()
 
   assert_true(square.isFalling)
+  assert_false(board.board[1][1].isFalling)
   assert_false(board.board[1][2].isFalling)
-  assert_false(board.board[1][3].isFalling)
 end
 
 function test_checkForSquaresToEndFalling()
   board:newSquareInRow(1)
 
-  local square = board.board[1][1]
+  local square = board.board[1][2]
   square.isFalling = true
-  square.square.y = board.board[1][2].square.y - SQUARE_SIZE + 1
+  square:setY(board.board[1][1]:y() - SQUARE_SIZE + 1)
 
   board:checkForSquaresToEndFalling()
 
   assert_false(square.isFalling)
-  assert_equal(board.board[1][2].square.y - SQUARE_SIZE, square:y())
+  assert_equal(board.board[1][1]:y() - SQUARE_SIZE, square:y())
 end
 
 

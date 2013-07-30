@@ -69,8 +69,8 @@ function Board:checkForSquaresToBeginFalling()
   for x=1,self:rightOfBoard() do
     if #self.board[x] > 1 then
       for y=2, #self.board[x] do
-        if math.abs(self.board[x][y - 1]:y() - self.board[x][y]:y()) > SQUARE_SIZE then
-          self.board[x][y - 1].isFalling = true
+        if math.abs(self.board[x][y]:y() - self.board[x][y - 1]:y()) > SQUARE_SIZE then
+          self.board[x][y].isFalling = true
         end
       end
     end
@@ -81,9 +81,9 @@ function Board:checkForSquaresToEndFalling()
   for x=1,self:rightOfBoard() do
     if #self.board[x] > 1 then
       for y=2, #self.board[x] do
-        if math.abs(self.board[x][y - 1]:y() - self.board[x][y]:y()) < SQUARE_SIZE then
-          self.board[x][y - 1].isFalling = false
-          self.board[x][y - 1]:setY(self.board[x][y]:y() - SQUARE_SIZE)
+        if math.abs(self.board[x][y]:y() - self.board[x][y - 1]:y()) < SQUARE_SIZE then
+          self.board[x][y].isFalling = false
+          self.board[x][y]:setY(self.board[x][y - 1]:y() - SQUARE_SIZE)
         end
       end
     end
@@ -105,7 +105,7 @@ function Board:createNewRow()
 end
 
 function Board:newSquareInRow(x)
-  _.push(self.board[x], Square(x, SQUARE_START_Y, 'random', self))
+  _.unshift(self.board[x], Square(x, SQUARE_START_Y, 'random', self))
 end
 
 function Board:allSquares()

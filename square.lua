@@ -73,8 +73,8 @@ end
 
 function Square:setColor(color)
   if color == 'random' then
-    --color = _.first(_.shuffle({'green', 'yellow', 'red', 'blue', 'pink', 'cyan'}))
-    color = _.first(_.shuffle({'green', 'yellow', 'red'}))
+    color = _.first(_.shuffle({'green', 'yellow', 'red', 'blue', 'pink', 'cyan'}))
+    --color = _.first(_.shuffle({'green', 'yellow', 'red'}))
   end
 
   self.color = color

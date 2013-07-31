@@ -31,7 +31,7 @@ end
 
 function Board:clearSquare(squareToRemove)
   self.board[squareToRemove.gridX] = _.reject(self.board[squareToRemove.gridX], function(square) 
-             return square == squareToRemove 
+    return square == squareToRemove 
   end)
 end
 
@@ -49,6 +49,7 @@ end
 
 function Board:update()
   self:findAndRemoveSquaresInARow()
+  self:findAndRemoveSquaresInColumns()
 
   self.tick = self.tick + 1
 
@@ -147,4 +148,30 @@ function Board:addOrRestartChain(square, squaresInARow)
     squaresInARow = {square}
   end
   return squaresInARow
+end
+
+function Board:findAndRemoveSquaresInColumns()
+  local squares = self:findSquaresInColumns()
+  self:removeSquares(squares)
+end
+
+function Board:findSquaresInColumns()
+  local squares = {}
+  _.times(self:rightOfBoard(), function(i) 
+    local squaresInColumn = self:findSquaresInAColumn(i + 1)
+    squares = _.concat(squares, squaresInColumn)
+  end)
+  return squares
+end
+
+function Board:findSquaresInAColumn(column)
+  local squares = {}
+  local squaresInARow = {}
+  _.each(self:getColumn(column), function(square)
+    squaresInARow = self:addOrRestartChain(square, squaresInARow)
+    if #squaresInARow >= 3 then
+      squares = _.concat(squares, squaresInARow)
+    end
+  end)
+  return squares
 end

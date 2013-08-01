@@ -8,6 +8,8 @@ if os.getenv("LUA_TEST") then
   lunatest.suite("tests.main_game_test")
   lunatest.suite("tests.square_test")
   lunatest.suite("tests.board_test")
+  lunatest.suite("tests.row_finder_test")
+  lunatest.suite("tests.column_finder_test")
 
   lunatest.run()
   os.exit()

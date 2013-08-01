@@ -1,5 +1,7 @@
 require 'class'
 require 'global'
+require 'row_finder'
+require 'column_finder'
 _ = require 'underscore'
 
 
@@ -8,6 +10,9 @@ Board = class()
 function Board:init()
   self.tick = 0
   self.board = {}
+
+  self.finders = {RowFinder(self), ColumnFinder(self)}
+
   for x=1,self:rightOfBoard() do
     self.board[x] = {}
   end
@@ -48,12 +53,11 @@ end
 -- end
 
 function Board:update()
-  self:findAndRemoveSquaresInARow()
-  self:findAndRemoveSquaresInColumns()
+  self:findAndRemoveSquares()
 
   self.tick = self.tick + 1
 
-  _.each(self:allSquares(), function(square) 
+  _.each(self:allSquares(), function(square)
     square:update(self:shouldMoveSquareUp())
   end)
 
@@ -113,65 +117,12 @@ function Board:allSquares()
   return _.flatten(self.board)
 end
 
-function Board:findAndRemoveSquaresInARow()
-  local squares = self:findSquaresInARow()
-  self:removeSquares(squares)
-end
-
 function Board:removeSquares(squares)
   _.invokeObj(squares, "startDisappearing")
 end
 
-function Board:findSquaresInARow()
-  local squares = {}
-  for y=1,self:bottomOfBoard() do
-    local squaresInARow = {}
-    for x=1,self:rightOfBoard() do
-      if #self:getColumn(x) >= y then
-        squaresInARow = self:addOrRestartChain(self:getColumn(x)[y], squaresInARow)
-      else 
-        squaresInARow = {}
-      end
-
-      if #squaresInARow >= 3 then
-        squares = _.concat(squares, squaresInARow)
-      end
-    end
-  end
-  return squares
-end
-
-function Board:addOrRestartChain(square, squaresInARow)
-  if #squaresInARow > 0 and squaresInARow[1].color == square.color then
-    _.push(squaresInARow, square)
-  else
-    squaresInARow = {square}
-  end
-  return squaresInARow
-end
-
-function Board:findAndRemoveSquaresInColumns()
-  local squares = self:findSquaresInColumns()
-  self:removeSquares(squares)
-end
-
-function Board:findSquaresInColumns()
-  local squares = {}
-  _.times(self:rightOfBoard(), function(i) 
-    local squaresInColumn = self:findSquaresInAColumn(i + 1)
-    squares = _.concat(squares, squaresInColumn)
+function Board:findAndRemoveSquares()
+  _.each(self.finders, function(finder)
+    self:removeSquares(finder:find())
   end)
-  return squares
-end
-
-function Board:findSquaresInAColumn(column)
-  local squares = {}
-  local squaresInARow = {}
-  _.each(self:getColumn(column), function(square)
-    squaresInARow = self:addOrRestartChain(square, squaresInARow)
-    if #squaresInARow >= 3 then
-      squares = _.concat(squares, squaresInARow)
-    end
-  end)
-  return squares
 end

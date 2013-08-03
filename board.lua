@@ -30,6 +30,10 @@ function Board:getColumn(x)
   return self.board[x]
 end
 
+function Board:getTopOfColumn(x)
+  return self.board[x][#self.board[x]]
+end
+
 -- function Board:setSquare(square)
 --   self.board[square.gridX][square.gridY] = square
 -- end

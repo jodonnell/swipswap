@@ -16,14 +16,34 @@ function test_that_swiping_on_a_block_lifts_it_to_top()
 
   mainGame:update()
 
-  mainGame.control.x = 2
+  mainGame.control.y = mainGame.board:bottomOfBoard() - 1
   mainGame:update()
-
-  assert_equal(1, #mainGame.board:getColumn(1))
 
   mainGame.control.endTouch = true
   mainGame:update()
 
   assert_equal(0, #mainGame.board:getColumn(1))
-  assert_equal(2, #mainGame.board:getColumn(2))
+  assert_true(mainGame.clickedOnSquare.isMovingUp)
+end
+
+function test_that_dropping_a_block_drops_it()
+  assert_equal(1, #mainGame.board:getColumn(1))
+
+  mainGame.clickedOnSquare = Square(1, 0, 'random', mainGame.board)
+
+  mainGame.control.x = 1
+  mainGame.control.y = 1
+  mainGame.control.startTouch = true
+
+  mainGame:update()
+
+  mainGame.control.y = 2
+  mainGame:update()
+
+  mainGame.control.endTouch = true
+  mainGame:update()
+
+  assert_equal(2, #mainGame.board:getColumn(1))
+  assert_nil(mainGame.clickedOnSquare)
+  assert_true(mainGame.board:getTopOfColumn(1).isFalling)
 end

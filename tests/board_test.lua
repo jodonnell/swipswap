@@ -91,3 +91,8 @@ function test_update()
   board:update()
   assert_equal(board:rightOfBoard() * 2, #board:allSquares())
 end
+
+function test_getTopOfColumn()
+  board:newSquareInRow(1)
+  assert_equal(board:getColumn(1)[2], board:getTopOfColumn(1))
+end

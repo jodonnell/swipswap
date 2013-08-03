@@ -14,6 +14,7 @@ end
 
 
 function test_update()
+  square:setY(100)
   local y = square:y()
   square:update(false)
   assert_equal(y, square:y())
@@ -25,6 +26,12 @@ function test_update()
   square.isFalling = true
   square:update(true)
   assert_equal(y + 10, square:y())
+
+  y = square:y()
+  square.isFalling = false
+  square.isMovingUp = true
+  square:update(true)
+  assert_equal(y - 10, square:y())
 
 end
 
@@ -50,5 +57,16 @@ function test_fall()
   local y = square:y()
   square:fall()
   assert_equal(y + 10, square:y())
+end
+
+function test_move_up()
+  square:setY(100)
+  square:moveUp()
+  assert_equal(90, square:y())
+
+  square:setY(SQUARE_SIZE / 2 + 9)
+  square:moveUp()
+  assert_equal(SQUARE_SIZE / 2, square:y())
+  assert_false(square.isMovingUp)
 end
 

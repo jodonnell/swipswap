@@ -22,10 +22,10 @@ function test_can_get_all_squares()
 end 
 
 function test_shouldCreateNewRow()
-  board.tick = SQUARE_SIZE * 4 - 1
+  board.tick = SQUARE_SIZE * GAME_SPEED - 1
   assert_false(board:shouldCreateNewRow())
 
-  board.tick = SQUARE_SIZE * 4
+  board.tick = SQUARE_SIZE * GAME_SPEED
   assert_true(board:shouldCreateNewRow())
 end 
 
@@ -85,6 +85,14 @@ function test_checkForSquaresToEndFalling()
   assert_equal(board.board[1][1]:y() - SQUARE_SIZE, square:y())
 end
 
+-- function test_squares_fall_when_there_is_nothing_underneath_them()
+--   local square = board:getTopOfColumn(1)
+--   square:setY(100)
+
+--   board:checkForSquaresToBeginFalling()
+
+--   assert_true(square.isFalling)
+-- end
 
 function test_update()
   board.shouldCreateNewRow = function() return true end

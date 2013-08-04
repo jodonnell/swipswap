@@ -5,8 +5,13 @@
 ** If creatures are uncovered, they begin rushing towards you
 ** If creature reaches you, you die
 ** You can swipe up on uncovered block to move it to top side of screen
+*** Very buggy
+*** Animate moving along top of screen
+*** Cannot swipe up while moving up
 ** You can swipe down to send a block back to the bottom (is sent in same row you swipe on)
+*** What happens when you drop in empty row
 ** DONE Three in a row of same color makes blocks/monsters disappear
+*** Falling when there is empty row
 ** Monsters can chew through block in front of them
 ** Things gradually speed up as you kill more monsters
 ** If monster rushes at you and you send block on top of it, it stops in its tracks

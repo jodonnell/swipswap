@@ -50,22 +50,6 @@ function Square:update(moveUp)
   if self.isMovingUp then
     self:moveUp()
   end
-
-  -- if self:shouldDrop() then
-  --   self:drop()
-  -- end
-
-  -- if self.isDropping then
-  --   self:moveDown()
-  -- end
-
-  -- if self.isMovingUp then
-  --   self:moveUp()
-  -- end
-
-  -- if self.isDropping and self:anythingBelow() then
-  --   self:hitBottom()
-  -- end
 end
 
 function Square:shouldMoveUp(moveUp)
@@ -107,56 +91,6 @@ function Square:setColor(color)
 
 end
 
--- function Square:setGridY(y)
---   self.gridY = y
---   self.square.y = gridToPixels(y)
--- end
-
--- function Square:moveToY(y)
---   self.board:clearSquare(self)
---   self:setGridY(y)
---   self.board:setSquare(self)
--- end
-
--- function Square:removeFromBoard()
---   self.board:clearSquare(self)
--- end
-
--- function Square:addToBoardFromTop(x)
---   self.gridY = 1
---   self:moveTo(x)
---   self.board:setSquare(self)
--- end
-
--- function Square:goToTop()
---   self.isMovingUp = true
--- end
-
--- function Square:moveDown()
---   self.board:clearSquare(self)
---   self.square.y = self.square.y + 15
---   self.gridY = pixelsToGrid(self.square.y)
---   self.board:setSquare(self)
--- end
-
--- function Square:moveUp()
---   self.square.y = self.square.y - 30
---   if self.square.y <= 0 then
---     self.isMovingUp = false
---     self.square.y = 0
---   end
--- end
-
--- function Square:hitBottom()
---   self.isDropping = false
---   self.dropped = true
---   self.square.y = gridToPixels(self.gridY)
--- end
-
--- function Square:anythingBelow()
---   return self.board:anythingBelow(self.gridX, self.gridY)
--- end
-
 function Square:blink()
   if(self.square.alpha < 1) then
     transition.to( self.square, {time=140, alpha=1})
@@ -182,11 +116,3 @@ function Square:endDisappearing()
   self.square:removeSelf()
   self.board:clearSquare(self)
 end
-
--- function Square:shouldDrop()
---   return self.isDropping == false and not self:anythingBelow()
--- end
-
--- function Square:drop()
---   self.isDropping = true
--- end

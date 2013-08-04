@@ -100,11 +100,11 @@ function Board:checkForSquaresToEndFalling()
 end
 
 function Board:shouldMoveSquareUp()
-  return self.tick % 4 == 0
+  return self.tick % GAME_SPEED == 0
 end
 
 function Board:shouldCreateNewRow()
-  return self.tick == SQUARE_SIZE * 4
+  return self.tick == SQUARE_SIZE * GAME_SPEED
 end
 
 function Board:createNewRow()

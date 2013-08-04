@@ -2,6 +2,8 @@ module(..., package.seeall)
 
 require "main_game"
 require "control"
+require "block"
+require "square"
 
 function setup()
   mainGame = MainGame(Control())
@@ -29,7 +31,7 @@ end
 function test_that_dropping_a_block_drops_it()
   assert_equal(1, #mainGame.board:getColumn(1))
 
-  mainGame.clickedOnSquare = Square(1, 0, 'random', mainGame.board)
+  mainGame.clickedOnSquare = Block(1, 0, Square('random'), mainGame.board)
 
   mainGame.control.x = 1
   mainGame.control.y = 1

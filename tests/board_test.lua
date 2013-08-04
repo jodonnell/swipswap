@@ -17,7 +17,7 @@ function test_can_get_all_squares()
   assert_equal(board:rightOfBoard(), #board:allSquares())
 
   _.each(board:allSquares(), function(square)
-    assert_true(square:is_a(Square))
+    assert_true(square:is_a(Block))
   end)
 end 
 

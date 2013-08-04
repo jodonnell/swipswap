@@ -2,6 +2,9 @@ require 'class'
 require 'global'
 require 'row_finder'
 require 'column_finder'
+require 'square'
+require 'block'
+require 'ghost'
 _ = require 'underscore'
 
 
@@ -114,7 +117,7 @@ function Board:createNewRow()
 end
 
 function Board:newSquareInRow(x)
-  _.unshift(self.board[x], Square(x, SQUARE_START_Y, 'random', self))
+  _.unshift(self.board[x], self:randomBlock(x))
 end
 
 function Board:allSquares()
@@ -129,4 +132,13 @@ function Board:findAndRemoveSquares()
   _.each(self.finders, function(finder)
     self:removeSquares(finder:find())
   end)
+end
+
+function Board:randomBlock(x)
+  local number = math.random(1, 100)
+  if number > 90 then
+    return Block(x, SQUARE_START_Y, Ghost('random'), self)
+  else
+    return Block(x, SQUARE_START_Y, Square('random'), self)
+  end
 end

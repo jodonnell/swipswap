@@ -99,3 +99,10 @@ end
 function Block:uncovered()
   self.sprite:uncovered(self)
 end
+
+function Block:isYInBlock(y)
+  if y >= self:y() - SQUARE_SIZE / 2 and y <= self:y() + SQUARE_SIZE / 2 then
+    return true
+  end
+  return false
+end

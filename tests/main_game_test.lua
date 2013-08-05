@@ -13,12 +13,12 @@ function test_that_swiping_on_a_block_lifts_it_to_top()
   assert_equal(1, #mainGame.board:getColumn(1))
 
   mainGame.control.x = 1
-  mainGame.control.y = mainGame.board:bottomOfBoard()
+  mainGame.control.y = SQUARE_START_Y
   mainGame.control.startTouch = true
 
   mainGame:update()
 
-  mainGame.control.y = mainGame.board:bottomOfBoard() - 1
+  mainGame.control.y = SQUARE_START_Y - 1
   mainGame:update()
 
   mainGame.control.endTouch = true

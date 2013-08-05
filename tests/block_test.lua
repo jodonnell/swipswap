@@ -70,3 +70,14 @@ function test_move_up()
   assert_equal(SQUARE_SIZE / 2, block:y())
   assert_false(block.isMovingUp)
 end
+
+function test_isYInBlock()
+  block:setY(100)
+
+  assert_false(block:isYInBlock(99 - SQUARE_SIZE / 2))
+  assert_true(block:isYInBlock(100 - SQUARE_SIZE / 2))
+
+  assert_true(block:isYInBlock(100 + SQUARE_SIZE / 2))
+  assert_false(block:isYInBlock(101 + SQUARE_SIZE / 2))
+  
+end

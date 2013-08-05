@@ -18,7 +18,7 @@ function MainGame:update()
 
   if self.control.startTouch then
      self.control.startTouch = nil
-     self.tappedSquare = self.board:getTopOfColumn(self.control.x)
+     self.tappedSquare = self.board:getBlockInColumnAtY(self.control.x, self.control.y)
   end
 
 
@@ -47,6 +47,10 @@ end
 
 function MainGame:pickupBlocks()
   self.control.endTouch = nil
+
+  if self.tappedSquare == nil then
+    return
+  end
 
   _.pop(self.board:getColumn(self.tappedSquare:getGridX()))
   self.tappedSquare.isMovingUp = true

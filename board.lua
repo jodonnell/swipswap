@@ -152,3 +152,13 @@ function Board:makeAnyGhostsRush()
     end
   end
 end
+
+function Board:getBlockInColumnAtY(column, y)
+  local foundBlock = nil
+  _.each(self:getColumn(column), function(block)
+    if block:isYInBlock(y) then
+      foundBlock = block
+    end
+  end)
+  return foundBlock
+end

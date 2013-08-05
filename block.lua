@@ -4,6 +4,7 @@ require 'global'
 Block = class()
 
 function Block:init(x, y, sprite, board)
+  self.sprite = sprite
   self.square = sprite.square
   self.color = sprite.color
 
@@ -13,6 +14,7 @@ function Block:init(x, y, sprite, board)
   self.board = board
   self.isFalling = false
   self.isMovingUp = false
+  self.isRushing = false
 end
 
 function Block:setGridX(x)
@@ -41,8 +43,10 @@ function Block:update(moveUp)
     self:fall()
   end
 
-  if self.isMovingUp then
-    self:moveUp()
+  if self.isRushing then
+    self:moveUp(3)
+  elseif self.isMovingUp then
+    self:moveUp(10)
   end
 end
 
@@ -54,8 +58,8 @@ function Block:fall()
   self.square.y = self.square.y + 10
 end
 
-function Block:moveUp()
-  self.square.y = self.square.y - 10
+function Block:moveUp(speed)
+  self.square.y = self.square.y - speed
   if self:y() < SQUARE_SIZE / 2 then
     self.square.y = SQUARE_SIZE / 2
     self.isMovingUp = false
@@ -86,4 +90,8 @@ function Block:endDisappearing()
   timer.cancel(self.blinkingTimer)
   self.square:removeSelf()
   self.board:clearSquare(self)
+end
+
+function Block:uncovered()
+  self.sprite:uncovered(self)
 end

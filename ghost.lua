@@ -17,3 +17,7 @@ function Ghost:setColor(color)
   self.color = color
   self.square = display.newImage(self.color .. "_closed.png")
 end
+
+function Ghost:uncovered(block)
+  block.isRushing = true
+end

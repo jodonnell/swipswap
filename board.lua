@@ -61,6 +61,7 @@ end
 
 function Board:update()
   self:findAndRemoveSquares()
+  self:makeAnyGhostsRush()
 
   self.tick = self.tick + 1
 
@@ -112,12 +113,12 @@ end
 
 function Board:createNewRow()
   for x=1,self:rightOfBoard() do
-    self:newSquareInRow(x)
+    self:newSquareInRow(x, self:randomBlock(x))
   end
 end
 
-function Board:newSquareInRow(x)
-  _.unshift(self.board[x], self:randomBlock(x))
+function Board:newSquareInRow(x, block)
+  _.unshift(self.board[x], block)
 end
 
 function Board:allSquares()
@@ -140,5 +141,14 @@ function Board:randomBlock(x)
     return Block(x, SQUARE_START_Y, Ghost('random'), self)
   else
     return Block(x, SQUARE_START_Y, Square('random'), self)
+  end
+end
+
+function Board:makeAnyGhostsRush()
+  for x=1,self:rightOfBoard() do
+    local top = self:getTopOfColumn(x)
+    if top then
+      top:uncovered()
+    end
   end
 end

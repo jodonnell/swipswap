@@ -10,8 +10,8 @@ function setup()
 end
 
 function test_the_board_can_find_three_in_a_column()
-  board:newSquareInRow(1)
-  board:newSquareInRow(1)
+  board:newSquareInRow(1, Block(1, SQUARE_START_Y, Square('random'), board))
+  board:newSquareInRow(1, Block(1, SQUARE_START_Y, Ghost('random'), board))
   
   board.board[1][1].color = 'red'
   board.board[1][2].color = 'red'
@@ -29,11 +29,11 @@ function test_the_board_can_find_three_in_a_column()
 end
 
 function test_the_board_can_find_three_in_columns()
-  board:newSquareInRow(1)
-  board:newSquareInRow(1)
+  board:newSquareInRow(1, Block(1, SQUARE_START_Y, Square('random'), board))
+  board:newSquareInRow(1, Block(1, SQUARE_START_Y, Ghost('random'), board))
 
-  board:newSquareInRow(2)
-  board:newSquareInRow(2)
+  board:newSquareInRow(2, Block(2, SQUARE_START_Y, Square('random'), board))
+  board:newSquareInRow(2, Block(2, SQUARE_START_Y, Ghost('random'), board))
   
   board.board[1][1].color = 'red'
   board.board[1][2].color = 'red'

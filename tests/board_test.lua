@@ -37,7 +37,7 @@ end
 
 function test_newSquareInRow()
   assert_equal(1, #board:getColumn(1))
-  board:newSquareInRow(1)
+  board:newSquareInRow(1, Block(1, SQUARE_START_Y, Square('random'), board))
   assert_equal(2, #board:getColumn(1))
 end
 
@@ -57,8 +57,8 @@ function test_removeSquares()
 end
 
 function test_checkForSquaresToBeginFalling()
-  board:newSquareInRow(1)
-  board:newSquareInRow(1)
+  board:newSquareInRow(1, Block(1, SQUARE_START_Y, Square('random'), board))
+  board:newSquareInRow(1, Block(1, SQUARE_START_Y, Square('random'), board))
 
   local square = board.board[1][3]
   square.square.y = 0
@@ -73,7 +73,7 @@ function test_checkForSquaresToBeginFalling()
 end
 
 function test_checkForSquaresToEndFalling()
-  board:newSquareInRow(1)
+  board:newSquareInRow(1, Block(1, SQUARE_START_Y, Square('random'), board))
 
   local square = board.board[1][2]
   square.isFalling = true
@@ -101,6 +101,13 @@ function test_update()
 end
 
 function test_getTopOfColumn()
-  board:newSquareInRow(1)
+  board:newSquareInRow(1, Block(1, SQUARE_START_Y, Square('random'), board))
   assert_equal(board:getColumn(1)[2], board:getTopOfColumn(1))
+end
+
+function test_ghost_starts_rushing_at_you_if_top_of_column()
+  local ghost = Block(1, SQUARE_START_Y, Ghost('random'), board)
+  board.board[1][1].sprite = ghost
+  board:makeAnyGhostsRush()
+  assert_true(ghost.isRushing)
 end

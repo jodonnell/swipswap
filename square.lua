@@ -32,3 +32,7 @@ function Square:setColor(color)
   end
 
 end
+
+function Square:uncovered(block)
+
+end

@@ -30,6 +30,10 @@ function Block:x()
   return self.square.x
 end
 
+function Block:getGridX()
+  return self.gridX
+end
+
 function Block:y()
   return self.square.y
 end

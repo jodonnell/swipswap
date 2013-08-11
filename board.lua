@@ -25,10 +25,6 @@ end
 function Board:isGameOver()
 end
 
--- function Board:isSpotFilled(x, y)
---   return self.board[x][y] and self:getSquare(x, y).isDropping == false
--- end
-
 function Board:getColumn(x)
   return self.board[x]
 end
@@ -36,10 +32,6 @@ end
 function Board:getTopOfColumn(x)
   return self.board[x][#self.board[x]]
 end
-
--- function Board:setSquare(square)
---   self.board[square.gridX][square.gridY] = square
--- end
 
 function Board:clearSquare(squareToRemove)
   self.board[squareToRemove.gridX] = _.reject(self.board[squareToRemove.gridX], function(square) 
@@ -54,10 +46,6 @@ end
 function Board:bottomOfBoard()
   return 13
 end
-
--- function Board:anythingBelow(x, y)
---   return y == self:bottomOfBoard() or self:getSquare(x, y + 1)
--- end
 
 function Board:update()
   self:findAndRemoveSquares()
@@ -161,4 +149,10 @@ function Board:getBlockInColumnAtY(column, y)
     end
   end)
   return foundBlock
+end
+
+function Board:getAllAbove(block)
+  local column = block:getGridX()
+  local blocks = self:getColumn(column)
+  _.each(blocks, function(block)end)
 end

@@ -16,18 +16,8 @@ end
 function MainGame:update()
   if self.board:isGameOver() then return end
 
-  if self.control.startTouch then
-     self.control.startTouch = nil
-     self.tappedSquare = self.board:getBlockInColumnAtY(self.control.x, self.control.y)
-  end
-
-
-  if self.control.endTouch and self.clickedOnSquare and self.clickedOnSquare.isMovingUp then
-  elseif self.control.endTouch and self.clickedOnSquare then
-    self:dropBlocks()
-  elseif self.control.endTouch then
-    self:pickupBlocks()
-  end
+  self:touched()
+  self:endTouched()
 
   if self.clickedOnSquare then
      self.clickedOnSquare:update()
@@ -37,8 +27,6 @@ function MainGame:update()
 end
 
 function MainGame:dropBlocks()
-  self.control.endTouch = nil
-
   self.clickedOnSquare:setGridX(self.control.x)
   self.clickedOnSquare.isFalling = true
   _.push(self.board:getColumn(self.control.x), self.clickedOnSquare)
@@ -46,13 +34,37 @@ function MainGame:dropBlocks()
 end
 
 function MainGame:pickupBlocks()
-  self.control.endTouch = nil
-
   if self.tappedSquare == nil then
     return
   end
 
+  -- get all squares above current square.
+  -- move em up
   _.pop(self.board:getColumn(self.tappedSquare:getGridX()))
   self.tappedSquare.isMovingUp = true
   self.clickedOnSquare = self.tappedSquare
+end
+
+function MainGame:touched()
+  if not self.control.startTouch then
+    return
+  end
+
+  self.control.startTouch = nil
+  self.tappedSquare = self.board:getBlockInColumnAtY(self.control.x, self.control.y)
+end
+
+function MainGame:endTouched()
+  if not self.control.endTouch then
+    return
+  end
+
+  if self.clickedOnSquare and self.clickedOnSquare.isMovingUp then
+  elseif self.clickedOnSquare then
+    self.control.endTouch = nil
+    self:dropBlocks()
+  else
+    self.control.endTouch = nil
+    self:pickupBlocks()
+  end
 end

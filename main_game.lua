@@ -1,6 +1,7 @@
 require 'class'
 require 'square'
 require 'board'
+require 'held_blocks'
 
 MainGame = class()
 
@@ -9,7 +10,7 @@ function MainGame:init(control)
 
   self.board = Board()
   self.tappedSquare = nil
-  self.clickedOnSquare = nil
+  self.heldBlocks = HeldBlocks()
 end
 
 
@@ -19,18 +20,15 @@ function MainGame:update()
   self:touched()
   self:endTouched()
 
-  if self.clickedOnSquare then
-     self.clickedOnSquare:update()
-  end
-
+  self.heldBlocks:update()
   self.board:update()
 end
 
 function MainGame:dropBlocks()
-  self.clickedOnSquare:setGridX(self.control.x)
-  self.clickedOnSquare.isFalling = true
-  _.push(self.board:getColumn(self.control.x), self.clickedOnSquare)
-  self.clickedOnSquare = nil
+  self.heldBlocks:setGridX(self.control.x)
+  self.heldBlocks:fall()
+  _.push(self.board:getColumn(self.control.x), self.heldBlocks.blocks[1])
+  self.heldBlocks:clear()
 end
 
 function MainGame:pickupBlocks()
@@ -42,7 +40,7 @@ function MainGame:pickupBlocks()
   -- move em up
   _.pop(self.board:getColumn(self.tappedSquare:getGridX()))
   self.tappedSquare.isMovingUp = true
-  self.clickedOnSquare = self.tappedSquare
+  self.heldBlocks:addBlock(self.tappedSquare)
 end
 
 function MainGame:touched()
@@ -59,8 +57,8 @@ function MainGame:endTouched()
     return
   end
 
-  if self.clickedOnSquare and self.clickedOnSquare.isMovingUp then
-  elseif self.clickedOnSquare then
+  if not self.heldBlocks:isEmpty() and self.heldBlocks:isMovingBlockUp() then
+  elseif not self.heldBlocks:isEmpty() then
     self.control.endTouch = nil
     self:dropBlocks()
   else

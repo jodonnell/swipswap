@@ -21,6 +21,8 @@ end
 
 
 function HeldBlocks:update()
+  self:checkForSquaresToEndMovingUp()
+
   _.each(self.blocks, function(block)
     block:update()
   end)
@@ -31,9 +33,23 @@ function HeldBlocks:isMovingBlockUp()
 end
 
 function HeldBlocks:setGridX(x)
-  self.blocks[1]:setGridX(x)
+  _.each(self.blocks, function(block)
+    block:setGridX(x)
+  end)
 end
 
 function HeldBlocks:fall()
-  self.blocks[1].isFalling = true
+  _.each(self.blocks, function(block)
+    block.isFalling = true
+  end)
+end
+
+function HeldBlocks:checkForSquaresToEndMovingUp()
+  _.each(self.blocks, function(block, i)
+    local lowestY = SQUARE_SIZE / 2 + SQUARE_SIZE * (i - 1)
+    if block:y() < lowestY then
+      block.square.y = lowestY
+      block.isMovingUp = false
+    end
+  end)
 end

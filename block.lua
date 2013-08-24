@@ -64,10 +64,6 @@ end
 
 function Block:moveUp(speed)
   self.square.y = self.square.y - speed
-  if self:y() < SQUARE_SIZE / 2 then
-    self.square.y = SQUARE_SIZE / 2
-    self.isMovingUp = false
-  end
 end
 
 function Block:blink()

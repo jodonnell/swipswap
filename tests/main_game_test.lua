@@ -25,13 +25,13 @@ function test_that_swiping_on_a_block_lifts_it_to_top()
   mainGame:update()
 
   assert_equal(0, #mainGame.board:getColumn(1))
-  assert_true(mainGame.clickedOnSquare.isMovingUp)
+  assert_true(mainGame.heldBlocks.blocks[1].isMovingUp)
 end
 
 function test_that_dropping_a_block_drops_it()
   assert_equal(1, #mainGame.board:getColumn(1))
 
-  mainGame.clickedOnSquare = Block(1, 0, Square('random'), mainGame.board)
+  mainGame.heldBlocks:addBlock(Block(1, 0, Square('random'), mainGame.board))
 
   mainGame.control.x = 1
   mainGame.control.y = 1

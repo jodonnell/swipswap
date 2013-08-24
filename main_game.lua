@@ -27,7 +27,10 @@ end
 function MainGame:dropBlocks()
   self.heldBlocks:setGridX(self.control.x)
   self.heldBlocks:fall()
-  _.push(self.board:getColumn(self.control.x), self.heldBlocks.blocks[1])
+
+  _.each(_.reverse(self.heldBlocks.blocks), function(block)
+    _.push(self.board:getColumn(self.control.x), block)
+  end)
   self.heldBlocks:clear()
 end
 
@@ -38,9 +41,16 @@ function MainGame:pickupBlocks()
 
   -- get all squares above current square.
   -- move em up
-  _.pop(self.board:getColumn(self.tappedSquare:getGridX()))
-  self.tappedSquare.isMovingUp = true
-  self.heldBlocks:addBlock(self.tappedSquare)
+  local blocks = self.board:getAllAbove(self.tappedSquare)
+
+  _.times(#blocks, function()
+    _.pop(self.board:getColumn(self.tappedSquare:getGridX()))
+  end)
+
+  _.each(_.reverse(blocks), function(block)
+    block.isMovingUp = true
+    self.heldBlocks:addBlock(block)
+  end)
 end
 
 function MainGame:touched()

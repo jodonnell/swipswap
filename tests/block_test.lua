@@ -64,11 +64,6 @@ function test_move_up()
   block:setY(100)
   block:moveUp(10)
   assert_equal(90, block:y())
-
-  block:setY(SQUARE_SIZE / 2 + 9)
-  block:moveUp(10)
-  assert_equal(SQUARE_SIZE / 2, block:y())
-  assert_false(block.isMovingUp)
 end
 
 function test_isYInBlock()

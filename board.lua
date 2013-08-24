@@ -154,5 +154,7 @@ end
 function Board:getAllAbove(block)
   local column = block:getGridX()
   local blocks = self:getColumn(column)
-  _.each(blocks, function(block)end)
+  return _.filter(blocks, function(blockInColumn)
+    return blockInColumn:y() <= block:y()
+  end)
 end

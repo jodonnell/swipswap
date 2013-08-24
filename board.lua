@@ -30,10 +30,6 @@ function Board:getColumn(x)
   return self.board[x]
 end
 
-function Board:getTopOfColumn(x)
-  return self:getColumn(x):getTop()
-end
-
 function Board:clearSquare(block)
   local column = self:getColumn(block.gridX)
   column:removeBlock(block)
@@ -146,12 +142,12 @@ function Board:randomBlock(x)
 end
 
 function Board:makeAnyGhostsRush()
-  for x=1,self:rightOfBoard() do
-    local top = self:getTopOfColumn(x)
-    if top then
+  self:eachColumn(function(column)
+    if not column:isEmpty() then
+      local top = column:getTop()
       top:uncovered()
     end
-  end
+  end)
 end
 
 function Board:getBlockInColumnAtY(column, y)

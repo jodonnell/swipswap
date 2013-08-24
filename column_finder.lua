@@ -6,11 +6,10 @@ function ColumnFinder:init(board)
   self.board = board
 end
 
-
 function ColumnFinder:find()
   local squares = {}
-  _.times(self.board:rightOfBoard(), function(i) 
-    local squaresInColumn = self:findSquaresInAColumn(i + 1)
+  self.board:eachColumn(function(column)
+    local squaresInColumn = self:findSquaresInAColumn(column)
     squares = _.concat(squares, squaresInColumn)
   end)
   return squares
@@ -19,7 +18,7 @@ end
 function ColumnFinder:findSquaresInAColumn(column)
   local squares = {}
   local squaresInARow = {}
-  _.each(self.board:getColumn(column), function(square)
+  _.each(column.blocks, function(square)
     squaresInARow = self:addOrRestartChain(square, squaresInARow)
     if #squaresInARow >= 3 then
       squares = _.concat(squares, squaresInARow)

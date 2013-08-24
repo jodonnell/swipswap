@@ -11,8 +11,8 @@ function RowFinder:find()
   for y=1,self.board:bottomOfBoard() do
     local squaresInARow = {}
     for x=1,self.board:rightOfBoard() do
-      if #self.board:getColumn(x) >= y then
-        squaresInARow = self:addOrRestartChain(self.board:getColumn(x)[y], squaresInARow)
+      if #self.board:getColumn(x).blocks >= y then
+        squaresInARow = self:addOrRestartChain(self.board:getColumn(x).blocks[y], squaresInARow)
       else 
         squaresInARow = {}
       end

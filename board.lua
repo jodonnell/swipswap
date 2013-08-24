@@ -5,6 +5,7 @@ require 'column_finder'
 require 'square'
 require 'block'
 require 'ghost'
+require 'column'
 _ = require 'underscore'
 
 
@@ -17,7 +18,7 @@ function Board:init()
   self.finders = {RowFinder(self), ColumnFinder(self)}
 
   for x=1,self:rightOfBoard() do
-    self.board[x] = {}
+    self.board[x] = Column({})
   end
   self:createNewRow()
 end
@@ -30,13 +31,12 @@ function Board:getColumn(x)
 end
 
 function Board:getTopOfColumn(x)
-  return self.board[x][#self.board[x]]
+  return self:getColumn(x):getTop()
 end
 
-function Board:clearSquare(squareToRemove)
-  self.board[squareToRemove.gridX] = _.reject(self.board[squareToRemove.gridX], function(square) 
-    return square == squareToRemove 
-  end)
+function Board:clearSquare(block)
+  local column = self:getColumn(block.gridX)
+  column:removeBlock(block)
 end
 
 function Board:rightOfBoard()
@@ -66,29 +66,37 @@ function Board:update()
   end
 end
 
-function Board:checkForSquaresToBeginFalling()
+function Board:eachColumn(func)
   for x=1,self:rightOfBoard() do
-    if #self.board[x] > 1 then
-      for y=2, #self.board[x] do
-        if math.abs(self.board[x][y]:y() - self.board[x][y - 1]:y()) > SQUARE_SIZE then
-          self.board[x][y].isFalling = true
-        end
-      end
+    func(self:getColumn(x))
+  end
+end
+
+function Board:checkForSquaresToBeginFalling()
+  self:eachColumn(function (column)
+    column:checkForSquaresToBeginFalling()
+  end)
+end
+
+function Board:checkForSquaresToEndFalling()
+  self:eachColumn(function (column)
+    column:checkForSquaresToEndFalling()
+    self:checkForSquareHittingBottom(column)
+  end)
+end
+
+function Board:checkForSquareHittingBottom(column)
+  if not column:isEmpty() then
+    local block = column:getBottom()
+    if block.isFalling and block:y() > self:bottomOffset() then
+      block.isFalling = false
+      block:setY(self:bottomOffset())
     end
   end
 end
 
-function Board:checkForSquaresToEndFalling()
-  for x=1,self:rightOfBoard() do
-    if #self.board[x] > 1 then
-      for y=2, #self.board[x] do
-        if math.abs(self.board[x][y]:y() - self.board[x][y - 1]:y()) < SQUARE_SIZE then
-          self.board[x][y].isFalling = false
-          self.board[x][y]:setY(self.board[x][y - 1]:y() - SQUARE_SIZE)
-        end
-      end
-    end
-  end
+function Board:bottomOffset()
+  return SQUARE_START_Y - math.floor(self.tick / 12)
 end
 
 function Board:shouldMoveSquareUp()
@@ -101,16 +109,21 @@ end
 
 function Board:createNewRow()
   for x=1,self:rightOfBoard() do
-    self:newSquareInRow(x, self:randomBlock(x))
+    self:newSquareInColumn(x, self:randomBlock(x))
   end
 end
 
-function Board:newSquareInRow(x, block)
-  _.unshift(self.board[x], block)
+function Board:newSquareInColumn(x, block)
+  self:getColumn(x):addBlock(block)
 end
 
 function Board:allSquares()
-  return _.flatten(self.board)
+  local blocks = {}
+  for x=1,self:rightOfBoard() do
+    _.push(blocks, self:getColumn(x).blocks)
+  end
+
+  return _.flatten(blocks)
 end
 
 function Board:removeSquares(squares)
@@ -143,7 +156,7 @@ end
 
 function Board:getBlockInColumnAtY(column, y)
   local foundBlock = nil
-  _.each(self:getColumn(column), function(block)
+  self:getColumn(column):each(function(block)
     if block:isYInBlock(y) then
       foundBlock = block
     end
@@ -152,9 +165,6 @@ function Board:getBlockInColumnAtY(column, y)
 end
 
 function Board:getAllAbove(block)
-  local column = block:getGridX()
-  local blocks = self:getColumn(column)
-  return _.filter(blocks, function(blockInColumn)
-    return blockInColumn:y() <= block:y()
-  end)
+  local column = self:getColumn(block:getGridX())
+  return column:getAllAbove(block) 
 end

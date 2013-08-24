@@ -8,8 +8,9 @@ MainGame = class()
 function MainGame:init(control)
   self.control = control
 
-  self.board = Board()
   self.tappedSquare = nil
+
+  self.board = Board()
   self.heldBlocks = HeldBlocks()
 end
 
@@ -22,35 +23,6 @@ function MainGame:update()
 
   self.heldBlocks:update()
   self.board:update()
-end
-
-function MainGame:dropBlocks()
-  self.heldBlocks:setGridX(self.control.x)
-  self.heldBlocks:fall()
-
-  _.each(_.reverse(self.heldBlocks.blocks), function(block)
-    _.push(self.board:getColumn(self.control.x), block)
-  end)
-  self.heldBlocks:clear()
-end
-
-function MainGame:pickupBlocks()
-  if self.tappedSquare == nil then
-    return
-  end
-
-  -- get all squares above current square.
-  -- move em up
-  local blocks = self.board:getAllAbove(self.tappedSquare)
-
-  _.times(#blocks, function()
-    _.pop(self.board:getColumn(self.tappedSquare:getGridX()))
-  end)
-
-  _.each(_.reverse(blocks), function(block)
-    block.isMovingUp = true
-    self.heldBlocks:addBlock(block)
-  end)
 end
 
 function MainGame:touched()
@@ -75,4 +47,31 @@ function MainGame:endTouched()
     self.control.endTouch = nil
     self:pickupBlocks()
   end
+end
+
+function MainGame:dropBlocks()
+  self.heldBlocks:setGridX(self.control.x)
+  self.heldBlocks:fall()
+
+  _.each(_.reverse(self.heldBlocks.blocks), function(block)
+    self.board:getColumn(self.control.x):addBlockToTop(block)
+  end)
+  self.heldBlocks:clear()
+end
+
+function MainGame:pickupBlocks()
+  if self.tappedSquare == nil then
+    return
+  end
+
+  local blocks = self.board:getAllAbove(self.tappedSquare)
+
+  _.times(#blocks, function()
+    self.board:getColumn(self.tappedSquare:getGridX()):removeFromTop()
+  end)
+
+  _.each(_.reverse(blocks), function(block)
+    block.isMovingUp = true
+    self.heldBlocks:addBlock(block)
+  end)
 end

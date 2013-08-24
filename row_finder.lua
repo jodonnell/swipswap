@@ -10,9 +10,9 @@ function RowFinder:find()
   local squares = {}
   for y=1,self.board:bottomOfBoard() do
     local squaresInARow = {}
-    for x=1,self.board:rightOfBoard() do
-      if #self.board:getColumn(x).blocks >= y then
-        squaresInARow = self:addOrRestartChain(self.board:getColumn(x).blocks[y], squaresInARow)
+    self.board:eachColumn(function(column)
+      if #column.blocks >= y then
+        squaresInARow = self:addOrRestartChain(column.blocks[y], squaresInARow)
       else 
         squaresInARow = {}
       end
@@ -20,7 +20,7 @@ function RowFinder:find()
       if #squaresInARow >= 3 then
         squares = _.concat(squares, squaresInARow)
       end
-    end
+    end)
   end
   return squares
 end

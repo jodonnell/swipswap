@@ -92,7 +92,7 @@ function Board:checkForSquareHittingBottom(column)
 end
 
 function Board:bottomOffset()
-  return SQUARE_START_Y - (SQUARE_SIZE / 2) - math.floor(self.tick / 12)
+  return SQUARE_START_Y - math.floor(self.tick / GAME_SPEED)
 end
 
 function Board:shouldMoveSquareUp()

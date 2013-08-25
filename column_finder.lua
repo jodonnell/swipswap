@@ -28,6 +28,10 @@ function ColumnFinder:findSquaresInAColumn(column)
 end
 
 function ColumnFinder:addOrRestartChain(square, squaresInARow)
+  if square.isFalling then
+    return {}
+  end
+
   if #squaresInARow > 0 and squaresInARow[1].color == square.color then
     _.push(squaresInARow, square)
   else

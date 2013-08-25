@@ -55,11 +55,11 @@ function Column:checkForSquaresToBeginFalling(bottomOffset)
 
   for i=1, #self.blocks do
     if i == 1 then
-      if (not self:getBottom().isFalling) and  self:getBottom():y() < SQUARE_START_Y - SQUARE_SIZE then
+      if self:getBottom():isNormalState() and self:getBottom():y() < SQUARE_START_Y - SQUARE_SIZE then
         self:getBottom().isFalling = true
       end
     else
-      if math.abs(self.blocks[i]:y() - self.blocks[i - 1]:y()) > SQUARE_SIZE then
+      if self.blocks[i]:isNormalState() and math.abs(self.blocks[i]:y() - self.blocks[i - 1]:y()) > SQUARE_SIZE then
         self.blocks[i].isFalling = true
       end
     end
@@ -76,5 +76,11 @@ function Column:checkForSquaresToEndFalling()
       self.blocks[y].isFalling = false
       self.blocks[y]:setY(self.blocks[y - 1]:y() - SQUARE_SIZE)
     end
+  end
+end
+
+function Column:makeCoveredGhostsStopRushing()
+  for i=1, #self.blocks - 1 do
+    self.blocks[i].isRushing = false
   end
 end

@@ -54,6 +54,10 @@ function Block:update(moveUp)
   end
 end
 
+function Block:hasReachedTop()
+  return self.isRushing and self:y() <= 0
+end
+
 function Block:shouldMoveUp(moveUp)
   return moveUp and not self.isFalling and not self.isMovingUp
 end
@@ -94,6 +98,10 @@ end
 
 function Block:uncovered()
   self.sprite:uncovered(self)
+end
+
+function Block:isNormalState()
+  return not (self.isFlashing or self.isFalling or self.isRushing)
 end
 
 function Block:isYInBlock(y)

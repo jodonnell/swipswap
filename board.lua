@@ -24,6 +24,13 @@ function Board:init()
 end
 
 function Board:isGameOver()
+  local gameOver = false
+  self:eachColumn(function(column)
+    if column:getTop():hasReachedTop() then
+      gameOver = true
+    end
+  end)
+  return gameOver
 end
 
 function Board:getColumn(x)
@@ -46,6 +53,7 @@ end
 function Board:update()
   self:findAndRemoveSquares()
   self:makeAnyGhostsRush()
+  self:makeCoveredGhostsStopRushing()
 
   self.tick = self.tick + 1
 
@@ -147,6 +155,12 @@ function Board:makeAnyGhostsRush()
       local top = column:getTop()
       top:uncovered()
     end
+  end)
+end
+
+function Board:makeCoveredGhostsStopRushing()
+  self:eachColumn(function(column)
+    column:makeCoveredGhostsStopRushing()
   end)
 end
 

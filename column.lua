@@ -48,23 +48,33 @@ function Column:removeBlock(blockToRemove)
   end)
 end
 
-function Column:checkForSquaresToBeginFalling()
-  if #self.blocks > 1 then
-    for y=2, #self.blocks do
-      if math.abs(self.blocks[y]:y() - self.blocks[y - 1]:y()) > SQUARE_SIZE then
-        self.blocks[y].isFalling = true
+function Column:checkForSquaresToBeginFalling(bottomOffset)
+  if self:isEmpty() then
+    return
+  end
+
+  for i=1, #self.blocks do
+    if i == 1 then
+      if (not self:getBottom().isFalling) and  self:getBottom():y() < SQUARE_START_Y - SQUARE_SIZE then
+        self:getBottom().isFalling = true
+      end
+    else
+      if math.abs(self.blocks[i]:y() - self.blocks[i - 1]:y()) > SQUARE_SIZE then
+        self.blocks[i].isFalling = true
       end
     end
   end
 end
 
 function Column:checkForSquaresToEndFalling()
-  if #self.blocks > 1 then
-    for y=2, #self.blocks do
-      if math.abs(self.blocks[y]:y() - self.blocks[y - 1]:y()) < SQUARE_SIZE then
-        self.blocks[y].isFalling = false
-        self.blocks[y]:setY(self.blocks[y - 1]:y() - SQUARE_SIZE)
-      end
+  if #self.blocks < 2 then
+    return
+  end
+
+  for y=2, #self.blocks do
+    if math.abs(self.blocks[y]:y() - self.blocks[y - 1]:y()) < SQUARE_SIZE then
+      self.blocks[y].isFalling = false
+      self.blocks[y]:setY(self.blocks[y - 1]:y() - SQUARE_SIZE)
     end
   end
 end

@@ -70,7 +70,7 @@ end
 
 function Board:checkForSquaresToBeginFalling()
   self:eachColumn(function (column)
-    column:checkForSquaresToBeginFalling()
+    column:checkForSquaresToBeginFalling(self:bottomOffset())
   end)
 end
 
@@ -92,7 +92,7 @@ function Board:checkForSquareHittingBottom(column)
 end
 
 function Board:bottomOffset()
-  return SQUARE_START_Y - math.floor(self.tick / 12)
+  return SQUARE_START_Y - (SQUARE_SIZE / 2) - math.floor(self.tick / 12)
 end
 
 function Board:shouldMoveSquareUp()
